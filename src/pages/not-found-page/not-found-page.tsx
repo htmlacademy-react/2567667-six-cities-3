@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import MainLogo from '../../components/logo/logo';
+import Logo from '../../components/logo/logo';
 
 export default function NotFoundPage() {
   return (
@@ -8,7 +8,7 @@ export default function NotFoundPage() {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <MainLogo />
+              <Logo />
             </div>
           </div>
         </div>
