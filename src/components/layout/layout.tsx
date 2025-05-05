@@ -1,0 +1,94 @@
+import { Outlet, useLocation } from 'react-router-dom';
+import { AppRoute } from '../../const.ts';
+import Logo from '../logo/logo.tsx';
+
+const layoutConfig: Record<AppRoute, { rootClass?: string; mainClass?: string; showUser: boolean; showFooter: boolean }> = {
+  [AppRoute.Root]: {
+    rootClass: 'page--gray page--main',
+    mainClass: 'page__main page__main--index',
+    showUser: true,
+    showFooter: false,
+  },
+  [AppRoute.Login]: {
+    rootClass: 'page--gray page--login',
+    mainClass: 'page__main page__main--login',
+    showUser: false,
+    showFooter: false,
+  },
+  [AppRoute.Favorites]: {
+    rootClass: '',
+    mainClass: 'page__main page__main--favorites',
+    showUser: true,
+    showFooter: true,
+  },
+  [AppRoute.Offer]: {
+    rootClass: '',
+    mainClass: 'page__main page__main--offer',
+    showUser: true,
+    showFooter: false,
+  },
+  [AppRoute.NotFound]: {
+    rootClass: 'page--gray page--main',
+    mainClass: 'page__main page__main--index',
+    showUser: false,
+    showFooter: false,
+  },
+};
+
+export default function Layout() {
+  const { pathname } = useLocation();
+  const config = layoutConfig[pathname as AppRoute] || layoutConfig[AppRoute.NotFound];
+  const { rootClass = '', mainClass = 'page__main', showUser, showFooter } = config;
+
+  return (
+    <div className={`page ${rootClass}`}>
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <Logo />
+            </div>
+            {showUser && (
+              <nav className="header__nav">
+                <ul className="header__nav-list">
+                  <li className="header__nav-item user">
+                    <a className="header__nav-link header__nav-link--profile" href="#">
+                      <div className="header__avatar-wrapper user__avatar-wrapper" />
+                      <span className="header__user-name user__name">
+                        Oliver.conner@gmail.com
+                      </span>
+                      <span className="header__favorite-count">3</span>
+                    </a>
+                  </li>
+                  <li className="header__nav-item">
+                    <a className="header__nav-link" href="#">
+                      <span className="header__signout">Sign out</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main className={mainClass}>
+        <Outlet />
+      </main>
+
+      {showFooter && (
+        <footer className="footer container">
+          <a className="footer__logo-link" href="/">
+            <img
+              className="footer__logo"
+              src="img/logo.svg"
+              alt="6 cities logo"
+              width="64"
+              height="33"
+            />
+          </a>
+        </footer>
+      )}
+    </div>
+  );
+}
