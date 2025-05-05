@@ -1,5 +1,6 @@
 import OfferCard from '../../components/offer-card/offer-card.tsx';
 import Logo from '../../components/logo/logo';
+import {Helmet} from 'react-helmet-async';
 
 type MainPageProps = {
   offerCount: number;
@@ -8,6 +9,11 @@ type MainPageProps = {
 export default function MainPage({ offerCount }: MainPageProps) {
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>
+          6 Cities - Main Page
+        </title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

@@ -1,8 +1,14 @@
 import Logo from '../../components/logo/logo';
+import {Helmet} from 'react-helmet-async';
 
 export default function LoginPage(){
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>
+          6 Cities - Login
+        </title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
