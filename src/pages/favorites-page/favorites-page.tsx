@@ -1,4 +1,5 @@
 import Logo from '../../components/logo/logo.tsx';
+import {Link} from 'react-router-dom';
 
 export default function FavoritesPage() {
   return (
@@ -206,7 +207,7 @@ export default function FavoritesPage() {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to="/">
           <img
             className="footer__logo"
             src="img/logo.svg"
@@ -214,7 +215,7 @@ export default function FavoritesPage() {
             width={64}
             height={33}
           />
-        </a>
+        </Link>
       </footer>
     </div>
   );
