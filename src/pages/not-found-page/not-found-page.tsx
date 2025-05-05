@@ -1,0 +1,42 @@
+import { Link } from 'react-router-dom';
+import MainLogo from '../../components/logo/logo';
+
+export default function NotFoundPage() {
+  return (
+    <div className="page page--gray page--main">
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <MainLogo />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="page__main page__main--index">
+        <div className="container" style={{ textAlign: 'center', padding: '60px 20px' }}>
+          <h1 style={{ fontSize: '48px', marginBottom: '20px' }}>404 - Страница не найдена</h1>
+          <p style={{ fontSize: '18px', marginBottom: '30px' }}>
+            Похоже, такой страницы не существует.
+          </p>
+          <Link
+            to="/"
+            className="locations__item-link"
+            style={{
+              display: 'inline-block',
+              padding: '10px 20px',
+              backgroundColor: '#4481c3',
+              color: '#fff',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              fontWeight: 'bold',
+            }}
+          >
+            Вернуться на главную
+          </Link>
+        </div>
+      </main>
+    </div>
+  );
+}
