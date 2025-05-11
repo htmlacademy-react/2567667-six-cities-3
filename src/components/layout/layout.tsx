@@ -6,7 +6,7 @@ import {layoutConfig} from './layout-utils.ts';
 export default function Layout() {
   const { pathname } = useLocation();
   const config = layoutConfig[pathname as AppRoute] || layoutConfig[AppRoute.NotFound];
-  const { rootClass = '', mainClass = 'page__main', showUser, showFooter } = config;
+  const { rootClass = '', showUser, showFooter } = config;
 
   return (
     <div className={`page ${rootClass}`}>
