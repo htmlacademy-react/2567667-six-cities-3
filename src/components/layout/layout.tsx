@@ -40,9 +40,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main className={mainClass}>
-        <Outlet />
-      </main>
+      <Outlet />
 
       {showFooter && (
         <footer className="footer container">
