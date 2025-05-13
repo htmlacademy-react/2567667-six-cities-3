@@ -2,23 +2,31 @@ import { Offer } from '../../mocks/offers';
 
 type OfferCardProps = {
   offer: Offer;
+  cardType?: 'favorites' | 'cities';
 };
 
-export default function OfferCard({ offer }: OfferCardProps) {
+export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps) {
+  const articleClass = cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card';
+  const imageWrapperClass = cardType === 'favorites'
+    ? 'favorites__image-wrapper place-card__image-wrapper'
+    : 'cities__image-wrapper place-card__image-wrapper';
+  const imageWidth = cardType === 'favorites' ? 150 : 260;
+  const imageHeight = cardType === 'favorites' ? 110 : 200;
+
   return (
-    <article className="cities__card place-card">
+    <article className={articleClass}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={imageWrapperClass}>
         <a href="#">
           <img
             className="place-card__image"
             src={offer.previewImage}
-            width="260"
-            height="200"
+            width={imageWidth}
+            height={imageHeight}
             alt={offer.title}
           />
         </a>
