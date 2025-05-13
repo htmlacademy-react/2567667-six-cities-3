@@ -1,4 +1,5 @@
 import { Offer } from '../../mocks/offers';
+import { Link } from 'react-router-dom';
 
 type OfferCardProps = {
   offer: Offer;
@@ -21,7 +22,7 @@ export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps
         </div>
       )}
       <div className={imageWrapperClass}>
-        <a href="#">
+        <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"
             src={offer.previewImage}
@@ -29,7 +30,7 @@ export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps
             height={imageHeight}
             alt={offer.title}
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -54,7 +55,7 @@ export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.title}</a>
+          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
