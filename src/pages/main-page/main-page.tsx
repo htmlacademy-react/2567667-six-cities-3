@@ -1,4 +1,4 @@
-import OfferCard from '../../components/offer-card/offer-card';
+import OffersList from '../../components/offer-list/offer-list.tsx';
 import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../mocks/offers';
 
@@ -54,11 +54,7 @@ export default function MainPage({ offers }: MainPageProps) {
                 </ul>
               </form>
 
-              <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => (
-                  <OfferCard key={offer.id} offer={offer} />
-                ))}
-              </div>
+              <OffersList offers={offers} />
             </section>
 
             <div className="cities__right-section">
