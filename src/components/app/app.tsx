@@ -8,41 +8,28 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {HelmetProvider} from 'react-helmet-async';
 import Layout from '../layout/layout';
+import {Offer} from '../../mocks/offers.ts';
 
 type AppProps = {
-  offerCount: number;
+  offers: Offer[];
 };
 
-export default function App({ offerCount }: AppProps) {
+export default function App({ offers }: AppProps) {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
-            <Route
-              index
-              element={<MainPage offerCount={offerCount} />}
+            <Route index element={<MainPage offers={offers} />} />
+            <Route path={AppRoute.Favorites} element={
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <FavoritesPage />
+              </PrivateRoute>
+            }
             />
-            <Route
-              path={AppRoute.Favorites}
-              element={
-                <PrivateRoute authorizationStatus={ AuthorizationStatus.Auth }>
-                  <FavoritesPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path={AppRoute.Offer}
-              element={<OfferPage />}
-            />
-            <Route
-              path="*"
-              element={<NotFoundPage />}
-            />
-            <Route
-              path={AppRoute.Login}
-              element={<LoginPage />}
-            />
+            <Route path={AppRoute.Offer} element={<OfferPage />} />
+            <Route path={AppRoute.Login} element={<LoginPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

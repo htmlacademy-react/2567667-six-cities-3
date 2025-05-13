@@ -1,11 +1,12 @@
-import OfferCard from '../../components/offer-card/offer-card.tsx';
-import {Helmet} from 'react-helmet-async';
+import OfferCard from '../../components/offer-card/offer-card';
+import { Helmet } from 'react-helmet-async';
+import { Offer } from '../../mocks/offers';
 
 type MainPageProps = {
-  offerCount: number;
-}
+  offers: Offer[];
+};
 
-export default function MainPage({ offerCount }: MainPageProps) {
+export default function MainPage({ offers }: MainPageProps) {
   return (
     <>
       <Helmet>
@@ -36,7 +37,7 @@ export default function MainPage({ offerCount }: MainPageProps) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offerCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -54,11 +55,9 @@ export default function MainPage({ offerCount }: MainPageProps) {
               </form>
 
               <div className="cities__places-list places__list tabs__content">
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
-                <OfferCard />
+                {offers.map((offer) => (
+                  <OfferCard key={offer.id} offer={offer} />
+                ))}
               </div>
             </section>
 
