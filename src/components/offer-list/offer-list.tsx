@@ -7,9 +7,7 @@ type OffersListProps = {
 };
 
 export default function OffersList({ offers }: OffersListProps) {
-  const [activeOfferId, setActiveOfferId] = useState<number | null>(null);
-
-  console.warn('Active Offer ID:', activeOfferId);
+  const [ , setActiveOfferId] = useState<number | null>(null);
 
   return (
     <div className="cities__places-list places__list tabs__content">

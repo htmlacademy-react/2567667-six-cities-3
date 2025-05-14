@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-export default function NotFoundPage() {
+const variants = {
+  page: {text: 'Похоже, такой страницы не существует.'},
+  offer: {text: 'Похоже, такого оффера не существует.'}
+};
+
+type TNotFoundPageProps = {
+  type: keyof typeof variants;
+}
+
+export default function NotFoundPage({type}: TNotFoundPageProps) {
   return (
     <>
       <Helmet>
@@ -15,7 +24,7 @@ export default function NotFoundPage() {
             404 - Страница не найдена
           </h1>
           <p style={{ fontSize: '18px', marginBottom: '30px' }}>
-            Похоже, такой страницы не существует.
+            {`Ooops! ${variants[type].text}`}
           </p>
           <Link
             to="/"

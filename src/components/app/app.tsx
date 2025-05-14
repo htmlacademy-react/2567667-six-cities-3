@@ -29,7 +29,7 @@ export default function App({ offers }: AppProps) {
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage type="page" />} />
           </Route>
         </Routes>
       </BrowserRouter>
