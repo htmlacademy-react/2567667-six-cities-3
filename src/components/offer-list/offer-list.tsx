@@ -12,13 +12,12 @@ export default function OffersList({ offers }: OffersListProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
       {offers.map((offer) => (
-        <article
+        <OfferCard
+          offer={offer}
           key={offer.id}
           onMouseEnter={() => setActiveOfferId(offer.id)}
           onMouseLeave={() => setActiveOfferId(null)}
-        >
-          <OfferCard offer={offer} />
-        </article>
+        />
       ))}
     </div>
   );

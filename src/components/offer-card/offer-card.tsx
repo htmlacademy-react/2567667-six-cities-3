@@ -4,9 +4,16 @@ import { Link } from 'react-router-dom';
 type OfferCardProps = {
   offer: Offer;
   cardType?: 'favorites' | 'cities';
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
-export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps) {
+export default function OfferCard({
+  offer,
+  cardType = 'cities',
+  onMouseEnter,
+  onMouseLeave,
+}: OfferCardProps) {
   const articleClass = cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card';
   const imageWrapperClass = cardType === 'favorites'
     ? 'favorites__image-wrapper place-card__image-wrapper'
@@ -15,7 +22,11 @@ export default function OfferCard({ offer, cardType = 'cities' }: OfferCardProps
   const imageHeight = cardType === 'favorites' ? 110 : 200;
 
   return (
-    <article className={articleClass}>
+    <article
+      className={articleClass}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
