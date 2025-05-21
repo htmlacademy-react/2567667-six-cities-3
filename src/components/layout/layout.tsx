@@ -44,7 +44,7 @@ export default function Layout() {
 
       {showFooter && (
         <footer className="footer container">
-          <Link className="footer__logo-link" to="/">
+          <Link className="footer__logo-link" to={AppRoute.Root}>
             <img
               className="footer__logo"
               src="img/logo.svg"
