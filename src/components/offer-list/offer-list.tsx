@@ -1,4 +1,4 @@
-import { Offer } from '../../mocks/offers.ts';
+import {Offer} from '../../types/offer.ts';
 import OfferCard from '../offer-card/offer-card.tsx';
 import { useState } from 'react';
 
@@ -7,7 +7,7 @@ type OffersListProps = {
 };
 
 export default function OffersList({ offers }: OffersListProps) {
-  const [ , setActiveOfferId] = useState<number | null>(null);
+  const [ , setActiveOfferId] = useState<string | null>(null);
 
   return (
     <div className="cities__places-list places__list tabs__content">

@@ -1,6 +1,6 @@
 import OffersList from '../../components/offer-list/offer-list.tsx';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../mocks/offers';
+import {Offer} from '../../types/offer.ts';
 import MainPageSort from '../../components/main-page-sort/main-page-sort.tsx';
 import MainPageLocations from '../../components/main-page-locations/main-page-locations.tsx';
 

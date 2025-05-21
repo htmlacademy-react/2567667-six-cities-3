@@ -7,7 +7,7 @@ import NotFoundPage from '../not-found-page/not-found-page';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
-  const offer = offers.find((o) => o.id === Number(id));
+  const offer = offers.find((o) => o.id === String(id));
 
   if (!offer) {
     return <NotFoundPage type="offer" />;

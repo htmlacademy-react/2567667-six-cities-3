@@ -8,7 +8,7 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {HelmetProvider} from 'react-helmet-async';
 import Layout from '../layout/layout';
-import {Offer} from '../../mocks/offers.ts';
+import {Offer} from '../../types/offer.ts';
 
 type AppProps = {
   offers: Offer[];

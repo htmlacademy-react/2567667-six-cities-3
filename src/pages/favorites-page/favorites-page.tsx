@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../mocks/offers';
+import {Offer} from '../../types/offer.ts';
 import OfferCard from '../../components/offer-card/offer-card';
 import {Link} from 'react-router-dom';
 
