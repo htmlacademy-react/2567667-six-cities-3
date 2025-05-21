@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import {Link, Outlet, useLocation} from 'react-router-dom';
 import Logo from '../logo/logo.tsx';
 import { AppRoute } from '../../const.ts';
 import {layoutConfig} from './layout-utils.ts';
@@ -20,18 +20,18 @@ export default function Layout() {
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link className="header__nav-link header__nav-link--profile" to="#">
                       <div className="header__avatar-wrapper user__avatar-wrapper" />
                       <span className="header__user-name user__name">
                         Oliver.conner@gmail.com
                       </span>
                       <span className="header__favorite-count">3</span>
-                    </a>
+                    </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="#">
+                    <Link className="header__nav-link" to="#">
                       <span className="header__signout">Sign out</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -44,7 +44,7 @@ export default function Layout() {
 
       {showFooter && (
         <footer className="footer container">
-          <a className="footer__logo-link" href="/">
+          <Link className="footer__logo-link" to="/">
             <img
               className="footer__logo"
               src="img/logo.svg"
@@ -52,7 +52,7 @@ export default function Layout() {
               width="64"
               height="33"
             />
-          </a>
+          </Link>
         </footer>
       )}
     </div>
