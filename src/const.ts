@@ -1,15 +1,21 @@
-export enum AppRoute {
-  Root = '/',
-  Login = '/login',
-  Favorites = '/favorites',
-  Offer = '/offer/:id',
-  NotFound = '*',
-}
+export const AppRoute = {
+  Root: '/',
+  Login: '/login',
+  Favorites: '/favorites',
+  Offer: '/offer/:id',
+  NotFound: '*',
+} as const;
 
-export enum AuthorizationStatus {
-  Auth = 'AUTH',
-  NoAuth = 'NO_AUTH',
-  Unknown = 'UNKNOWN',
-}
+export type AppRoute = typeof AppRoute[keyof typeof AppRoute];
 
-export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+export const AuthorizationStatus = {
+  Auth: 'AUTH',
+  NoAuth: 'NO_AUTH',
+  Unknown: 'UNKNOWN',
+} as const;
+
+export type AuthorizationStatus = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
+
+export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+
+export type City = typeof cities[number];
