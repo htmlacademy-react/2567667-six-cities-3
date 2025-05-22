@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Амаль Габидов](https://up.htmlacademy.ru/react-individual/3/user/2567667).
-* Наставник: [Олег Глущенко](https://htmlacademy.ru/profile/id305355).
+* Наставник: [Юлия Волкова](https://htmlacademy.ru/profile/julie_volkova).
 
 ---
 
