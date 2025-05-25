@@ -1,10 +1,12 @@
+export interface Location {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
+
 export interface City {
   name: string;
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location: Location;
 }
 
 export interface Host {
@@ -19,11 +21,7 @@ export interface Offer {
   type: 'apartment' | 'room' | 'house' | 'hotel';
   price: number;
   city: City;
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;

@@ -1,5 +1,7 @@
 import { Offer } from '../../types/offer.ts';
 import { Link } from 'react-router-dom';
+import {generatePath} from 'react-router-dom';
+import {AppRoute} from '../../const.ts';
 
 type OfferCardProps = {
   offer: Offer;
@@ -34,7 +36,7 @@ export default function OfferCard({
         </div>
       )}
       <div className={imageWrapperClass}>
-        <Link to={`/offer/${id}`}>
+        <Link to={generatePath(AppRoute.Offer, { id })}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -67,7 +69,7 @@ export default function OfferCard({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={generatePath(AppRoute.Offer, { id })}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

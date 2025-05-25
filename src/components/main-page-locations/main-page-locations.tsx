@@ -1,4 +1,4 @@
-import {cities} from '../../const.ts';
+import {AppRoute, cities} from '../../const.ts';
 import {Link} from 'react-router-dom';
 
 export default function MainPageLocations() {
@@ -9,7 +9,7 @@ export default function MainPageLocations() {
           <li className="locations__item" key={city}>
             <Link
               className={`locations__item-link tabs__item${city === 'Amsterdam' ? ' tabs__item--active' : ''}`}
-              to="#"
+              to={AppRoute.Root}
             >
               <span>{city}</span>
             </Link>
