@@ -16,4 +16,4 @@ export const AuthorizationStatus = {
 
 export type AuthorizationStatus = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
 
-export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;

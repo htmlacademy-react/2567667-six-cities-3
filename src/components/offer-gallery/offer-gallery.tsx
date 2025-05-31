@@ -5,8 +5,8 @@ type OfferGalleryProps = {
 export default function OfferGallery({ images }: OfferGalleryProps) {
   return (
     <div className="offer__gallery">
-      {images.map((image, idx) => (
-        <div className="offer__image-wrapper" key={idx}>
+      {images.map((image) => (
+        <div className="offer__image-wrapper" key={image}>
           <img className="offer__image" src={image} alt="Photo studio" />
         </div>
       ))}
