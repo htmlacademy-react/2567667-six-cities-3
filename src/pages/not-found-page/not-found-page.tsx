@@ -1,7 +1,18 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { AppRoute } from '../../const.ts';
+import styles from './not-found-page.module.css';
 
-export default function NotFoundPage() {
+const variants = {
+  page: { text: 'Похоже, такой страницы не существует.' },
+  offer: { text: 'Похоже, такого оффера не существует.' },
+};
+
+type TNotFoundPageProps = {
+  type: keyof typeof variants;
+};
+
+export default function NotFoundPage({type}: TNotFoundPageProps) {
   return (
     <>
       <Helmet>
@@ -10,25 +21,16 @@ export default function NotFoundPage() {
         </title>
       </Helmet>
       <main className="page__main page__main--index">
-        <div className="container" style={{ textAlign: 'center', padding: '60px 20px' }}>
-          <h1 className="title" style={{ fontSize: '48px', marginBottom: '20px' }}>
+        <div className={styles['not-found-container']}>
+          <h1 className={styles['not-found-title']}>
             404 - Страница не найдена
           </h1>
-          <p style={{ fontSize: '18px', marginBottom: '30px' }}>
-            Похоже, такой страницы не существует.
+          <p className={styles['not-found-text']}>
+            {`Ooops! ${variants[type].text}`}
           </p>
           <Link
-            to="/"
-            className="locations__item-link"
-            style={{
-              display: 'inline-block',
-              padding: '10px 20px',
-              backgroundColor: '#4481c3',
-              color: '#fff',
-              borderRadius: '4px',
-              textDecoration: 'none',
-              fontWeight: 'bold',
-            }}
+            to={AppRoute.Root}
+            className={styles['not-found-link']}
           >
             Вернуться на главную
           </Link>

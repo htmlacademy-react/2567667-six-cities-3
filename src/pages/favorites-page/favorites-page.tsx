@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../mocks/offers';
+import {Offer} from '../../types/offer.ts';
 import OfferCard from '../../components/offer-card/offer-card';
+import {Link} from 'react-router-dom';
+import {AppRoute} from '../../const.ts';
 
 type FavoritesPageProps = {
   offers: Offer[];
@@ -33,9 +35,9 @@ export default function FavoritesPage({ offers }: FavoritesPageProps) {
                 <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
-                      <a className="locations__item-link" href="#">
+                      <Link className="locations__item-link" to={AppRoute.Favorites}>
                         <span>{city}</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="favorites__places">

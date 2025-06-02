@@ -8,7 +8,7 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {HelmetProvider} from 'react-helmet-async';
 import Layout from '../layout/layout';
-import {Offer} from '../../mocks/offers.ts';
+import {Offer} from '../../types/offer.ts';
 
 type AppProps = {
   offers: Offer[];
@@ -29,7 +29,7 @@ export default function App({ offers }: AppProps) {
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage type="page" />} />
           </Route>
         </Routes>
       </BrowserRouter>
