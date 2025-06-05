@@ -20,3 +20,19 @@ export function handleOfferHover(
     setSelectedPoint(undefined);
   }
 }
+
+export function getPointsFromOffers(offers: Offer[]): Point[] {
+  return offers.map((offer) => ({
+    latitude: offer.location.latitude,
+    longitude: offer.location.longitude,
+    title: offer.title,
+  }));
+}
+
+export function getPointFromOffer(offer: Offer | undefined): Point {
+  return {
+    latitude: offer.location.latitude,
+    longitude: offer.location.longitude,
+    title: offer.title,
+  };
+}

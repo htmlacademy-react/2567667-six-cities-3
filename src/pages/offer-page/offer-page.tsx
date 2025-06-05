@@ -1,18 +1,22 @@
 import { useParams } from 'react-router-dom';
-import { offers } from '../../mocks/offers';
 import { Helmet } from 'react-helmet-async';
 import Review from '../../components/review/review';
-import NotFoundPage from '../not-found-page/not-found-page';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
-import { mockReviews } from '../../mocks/reviews';
+import Map from '../../components/map/map.tsx';
 import { getRatingWidth } from '../../utils/rating';
+import { offers } from '../../mocks/offers';
+import { mockReviews } from '../../mocks/reviews';
+import NotFoundPage from '../not-found-page/not-found-page';
+import { getPointsFromOffers, getPointFromOffer } from '../../components/map/map';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const currentOffer = offers.find((offerItem) => offerItem.id === String(id));
   const nearbyOffers = offers.filter((offerItem) => offerItem.id !== id).slice(0, 3);
+  const currentPoint = getPointFromOffer(currentOffer);
+  const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];
 
   if (!currentOffer) {
     return <NotFoundPage type="offer" />;
@@ -88,7 +92,9 @@ export default function OfferPage() {
               </section>
             </div>
           </div>
-          <section className="offer__map map" />
+          <section className="offer__map map">
+            <Map city={currentOffer.city} points={allPoints} selectedPoint={currentPoint} />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
