@@ -2,6 +2,7 @@ import { Offer } from '../../types/offer.ts';
 import { Link } from 'react-router-dom';
 import {generatePath} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
+import {getRatingWidth} from '../../utils/rating.ts';
 
 type OfferCardProps = {
   offer: Offer;
@@ -64,7 +65,7 @@ export default function OfferCard({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${(rating / 5) * 100}%` }}></span>
+            <span style={{ width: getRatingWidth(rating) }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

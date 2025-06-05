@@ -17,15 +17,11 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconUrl: 'img/pin.svg'
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: 'img/pin-active.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconUrl: 'img/pin-active.svg'
 });
 
 function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
