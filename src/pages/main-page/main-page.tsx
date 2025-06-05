@@ -3,12 +3,21 @@ import { Helmet } from 'react-helmet-async';
 import {Offer} from '../../types/offer.ts';
 import MainPageSort from '../../components/main-page-sort/main-page-sort.tsx';
 import MainPageLocations from '../../components/main-page-locations/main-page-locations.tsx';
+import Map from '../../components/map/map';
 
 type MainPageProps = {
   offers: Offer[];
 };
 
 export default function MainPage({ offers }: MainPageProps) {
+  const amsterdamOffers = offers.filter((offer) => offer.city.name === 'Amsterdam');
+  const city = amsterdamOffers[0]?.city;
+  const points = amsterdamOffers.map((offer) => ({
+    latitude: offer.location.latitude,
+    longitude: offer.location.longitude,
+    title: offer.title,
+  }));
+
   return (
     <>
       <Helmet>
@@ -26,14 +35,16 @@ export default function MainPage({ offers }: MainPageProps) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{amsterdamOffers.length} places to stay in Amsterdam</b>
               <MainPageSort />
 
-              <OffersList offers={offers} />
+              <OffersList offers={amsterdamOffers} />
             </section>
 
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              {city && points.length > 0 && (
+                <Map city={city} points={points} selectedPoint={undefined} />
+              )}
             </div>
           </div>
         </div>
