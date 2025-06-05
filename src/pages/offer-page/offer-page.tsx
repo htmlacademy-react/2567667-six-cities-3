@@ -6,6 +6,8 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
+import { mockReviews } from '../../mocks/reviews';
+import { getRatingWidth } from '../../utils/rating';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -44,7 +46,7 @@ export default function OfferPage() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${(currentOffer.rating / 5) * 100}%` }} />
+                  <span style={{ width: getRatingWidth(currentOffer.rating) }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
@@ -82,10 +84,7 @@ export default function OfferPage() {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews · <span className="reviews__amount">1</span>
-                </h2>
-                <Review isAuth />
+                <Review isAuth reviews={mockReviews} />
               </section>
             </div>
           </div>
