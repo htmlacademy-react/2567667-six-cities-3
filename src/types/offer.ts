@@ -15,6 +15,12 @@ export interface Host {
   isPro: boolean;
 }
 
+export type Point = {
+  latitude: number;
+  longitude: number;
+  title: string;
+};
+
 export interface Offer {
   id: string;
   title: string;
