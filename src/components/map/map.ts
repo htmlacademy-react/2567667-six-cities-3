@@ -29,7 +29,7 @@ export function getPointsFromOffers(offers: Offer[]): Point[] {
   }));
 }
 
-export function getPointFromOffer(offer: Offer | undefined): Point {
+export function getPointFromOffer(offer: Offer): Point {
   return {
     latitude: offer.location.latitude,
     longitude: offer.location.longitude,

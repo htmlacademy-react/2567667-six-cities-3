@@ -14,13 +14,14 @@ import { getPointsFromOffers, getPointFromOffer } from '../../components/map/map
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const currentOffer = offers.find((offerItem) => offerItem.id === String(id));
-  const nearbyOffers = offers.filter((offerItem) => offerItem.id !== id).slice(0, 3);
-  const currentPoint = getPointFromOffer(currentOffer);
-  const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];
 
   if (!currentOffer) {
     return <NotFoundPage type="offer" />;
   }
+
+  const nearbyOffers = offers.filter((offerItem) => offerItem.id !== id).slice(0, 3);
+  const currentPoint = getPointFromOffer(currentOffer);
+  const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];
 
   return (
     <>
