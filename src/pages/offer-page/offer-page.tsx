@@ -1,20 +1,32 @@
 import { useParams } from 'react-router-dom';
-import { offers } from '../../mocks/offers';
 import { Helmet } from 'react-helmet-async';
 import Review from '../../components/review/review';
-import NotFoundPage from '../not-found-page/not-found-page';
 import OfferGallery from '../../components/offer-gallery/offer-gallery';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
+import Map from '../../components/map/map.tsx';
+import { getRatingWidth } from '../../utils/rating';
+import { offers } from '../../mocks/offers';
+import { mockReviews } from '../../mocks/reviews';
+import NotFoundPage from '../not-found-page/not-found-page';
+import { getPointsFromOffers, getPointFromOffer } from '../../components/map/map';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const currentOffer = offers.find((offerItem) => offerItem.id === String(id));
-  const nearbyOffers = offers.filter((offerItem) => offerItem.id !== id).slice(0, 3);
 
   if (!currentOffer) {
     return <NotFoundPage type="offer" />;
   }
+
+  const nearbyOffers = offers
+    .filter((offerItem) =>
+      offerItem.id !== id &&
+      offerItem.city.name === currentOffer.city.name
+    )
+    .slice(0, 3);
+  const currentPoint = getPointFromOffer(currentOffer);
+  const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];
 
   return (
     <>
@@ -44,7 +56,7 @@ export default function OfferPage() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${(currentOffer.rating / 5) * 100}%` }} />
+                  <span style={{ width: getRatingWidth(currentOffer.rating) }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
@@ -82,21 +94,20 @@ export default function OfferPage() {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews · <span className="reviews__amount">1</span>
-                </h2>
-                <Review isAuth />
+                <Review isAuth reviews={mockReviews} />
               </section>
             </div>
           </div>
-          <section className="offer__map map" />
+          <section className="offer__map map">
+            <Map city={currentOffer.city} points={allPoints} selectedPoint={currentPoint} />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <NearPlacesList offers={nearbyOffers} />
+            <NearPlacesList nearbyOffers={nearbyOffers} />
           </section>
         </div>
       </main>

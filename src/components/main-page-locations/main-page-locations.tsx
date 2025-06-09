@@ -1,15 +1,24 @@
 import {AppRoute, CITIES} from '../../const.ts';
 import {Link} from 'react-router-dom';
 
-export default function MainPageLocations() {
+type MainPageLocationsProps = {
+  selectedCity: string;
+  onCityChange: (city: string) => void;
+};
+
+export default function MainPageLocations({ selectedCity, onCityChange }: MainPageLocationsProps) {
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
         {CITIES.map((city) => (
           <li className="locations__item" key={city}>
             <Link
-              className={`locations__item-link tabs__item${city === 'Amsterdam' ? ' tabs__item--active' : ''}`}
+              className={`locations__item-link tabs__item${city === selectedCity ? ' tabs__item--active' : ''}`}
               to={AppRoute.Root}
+              onClick={(e) => {
+                e.preventDefault();
+                onCityChange(city);
+              }}
             >
               <span>{city}</span>
             </Link>
