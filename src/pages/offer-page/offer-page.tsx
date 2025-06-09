@@ -19,7 +19,12 @@ export default function OfferPage() {
     return <NotFoundPage type="offer" />;
   }
 
-  const nearbyOffers = offers.filter((offerItem) => offerItem.id !== id).slice(0, 3);
+  const nearbyOffers = offers
+    .filter((offerItem) =>
+      offerItem.id !== id &&
+      offerItem.city.name === currentOffer.city.name
+    )
+    .slice(0, 3);
   const currentPoint = getPointFromOffer(currentOffer);
   const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];
 
@@ -102,7 +107,7 @@ export default function OfferPage() {
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <NearPlacesList offers={nearbyOffers} />
+            <NearPlacesList nearbyOffers={nearbyOffers} />
           </section>
         </div>
       </main>
