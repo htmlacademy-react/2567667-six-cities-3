@@ -12,16 +12,16 @@ type MainPageProps = {
 };
 
 export default function MainPage({ offers }: MainPageProps) {
-  const amsterdamOffers = offers.filter((offer) => offer.city.name === 'Amsterdam');
-  const city = amsterdamOffers[0]?.city;
+  const [selectedCity, setSelectedCity] = useState('Amsterdam');
+  const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
 
-  const points: Point[] = amsterdamOffers.map((offer) => ({
+  const cityOffers = offers.filter((offer) => offer.city.name === selectedCity);
+  const city = cityOffers[0]?.city;
+  const points: Point[] = cityOffers.map((offer) => ({
     latitude: offer.location.latitude,
     longitude: offer.location.longitude,
     title: offer.title,
   }));
-
-  const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
 
   return (
     <>
@@ -33,18 +33,20 @@ export default function MainPage({ offers }: MainPageProps) {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <MainPageLocations />
+          <MainPageLocations selectedCity={selectedCity} onCityChange={setSelectedCity} />
         </div>
 
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{amsterdamOffers.length} places to stay in Amsterdam</b>
+              <b className="places__found">
+                {cityOffers.length} places to stay in {selectedCity}
+              </b>
               <MainPageSort />
 
               <OffersList
-                offers={amsterdamOffers}
+                offers={cityOffers}
                 onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
               />
             </section>
