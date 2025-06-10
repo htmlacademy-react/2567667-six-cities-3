@@ -1,10 +1,13 @@
 import { Offer, Point } from '../../types/offer.ts';
 
-export function findPointByOffer(offer: Offer, points: Point[]): Point | undefined {
-  return points.find(
-    (p) =>
-      p.latitude === offer.location.latitude &&
-      p.longitude === offer.location.longitude
+export function findPointByOffer(
+  offer: Offer,
+  availablePoints: Point[]
+): Point | undefined {
+  return availablePoints.find(
+    (currentPoint) =>
+      currentPoint.latitude === offer.location.latitude &&
+      currentPoint.longitude === offer.location.longitude
   );
 }
 

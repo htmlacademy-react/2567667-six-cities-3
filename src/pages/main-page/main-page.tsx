@@ -12,7 +12,7 @@ type MainPageProps = {
 };
 
 export default function MainPage({ offers }: MainPageProps) {
-  const [selectedCity, setSelectedCity] = useState('Amsterdam');
+  const [selectedCity, setSelectedCity] = useState('Paris');
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
 
   const cityOffers = offers.filter((offer) => offer.city.name === selectedCity);
