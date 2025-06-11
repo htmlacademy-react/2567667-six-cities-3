@@ -5,7 +5,13 @@ import {layoutConfig} from './layout-utils.ts';
 
 export default function Layout() {
   const { pathname } = useLocation();
-  const config = layoutConfig[pathname as AppRoute] || layoutConfig[AppRoute.NotFound];
+  const getLayoutConfig = () => {
+    if (pathname.startsWith('/offer/')) {
+      return layoutConfig[AppRoute.Offer];
+    }
+    return layoutConfig[pathname as AppRoute] || layoutConfig[AppRoute.NotFound];
+  };
+  const config = getLayoutConfig();
   const { rootClass = '', showUser, showFooter } = config;
 
   return (
