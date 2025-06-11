@@ -6,6 +6,7 @@ import MainPageLocations from '../../components/main-page-locations/main-page-lo
 import Map from '../../components/map/map.tsx';
 import { useState } from 'react';
 import { handleOfferHover } from '../../components/map/map';
+import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
 
 type MainPageProps = {
   offers: Offer[];
@@ -30,33 +31,36 @@ export default function MainPage({ offers }: MainPageProps) {
           6 Cities - Main Page
         </title>
       </Helmet>
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${cityOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <MainPageLocations selectedCity={selectedCity} onCityChange={setSelectedCity} />
         </div>
 
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {cityOffers.length} places to stay in {selectedCity}
-              </b>
-              <MainPageSort />
+          {cityOffers.length === 0 ? (
+            <EmptyOffers cityName={selectedCity} />
+          ) : (
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">
+                  {cityOffers.length} places to stay in {selectedCity}
+                </b>
+                <MainPageSort />
+                <OffersList
+                  offers={cityOffers}
+                  onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
+                />
+              </section>
 
-              <OffersList
-                offers={cityOffers}
-                onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
-              />
-            </section>
-
-            <div className="cities__right-section">
-              {city && points.length > 0 && (
-                <Map city={city} points={points} selectedPoint={selectedPoint} />
-              )}
+              <div className="cities__right-section">
+                {city && points.length > 0 && (
+                  <Map city={city} points={points} selectedPoint={selectedPoint} />
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </>
