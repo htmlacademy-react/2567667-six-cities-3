@@ -1,24 +1,23 @@
 import OffersList from '../../components/offer-list/offer-list.tsx';
 import { Helmet } from 'react-helmet-async';
-import { Offer, Point } from '../../types/offer.ts';
+import { Point } from '../../types/offer.ts';
 import MainPageSort from '../../components/main-page-sort/main-page-sort.tsx';
 import MainPageLocations from '../../components/main-page-locations/main-page-locations.tsx';
 import Map from '../../components/map/map.tsx';
 import { useState } from 'react';
 import { handleOfferHover } from '../../components/map/map';
 import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { loadOffersByCity } from '../../store/action.ts';
+import { RootState, AppDispatch } from '../../store';
 
-type MainPageProps = {
-  offers: Offer[];
-};
-
-export default function MainPage({ offers }: MainPageProps) {
-  const [selectedCity, setSelectedCity] = useState('Paris');
+export default function MainPage() {
+  const dispatch = useDispatch<AppDispatch>();
+  const selectedCity = useSelector((state: RootState) => state.city);
+  const offers = useSelector((state: RootState) => state.offers);
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
-
-  const cityOffers = offers.filter((offer) => offer.city.name === selectedCity);
-  const city = cityOffers[0]?.city;
-  const points: Point[] = cityOffers.map((offer) => ({
+  const city = offers[0]?.city;
+  const points: Point[] = offers.map((offer) => ({
     latitude: offer.location.latitude,
     longitude: offer.location.longitude,
     title: offer.title,
@@ -31,25 +30,28 @@ export default function MainPage({ offers }: MainPageProps) {
           6 Cities - Main Page
         </title>
       </Helmet>
-      <main className={`page__main page__main--index ${cityOffers.length === 0 ? 'page__main--index-empty' : ''}`}>
+      <main className={`page__main page__main--index ${offers.length === 0 ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <MainPageLocations selectedCity={selectedCity} onCityChange={setSelectedCity} />
+          <MainPageLocations
+            selectedCity={selectedCity}
+            onCityChange={(newCity) => dispatch(loadOffersByCity(newCity))}
+          />
         </div>
 
         <div className="cities">
-          {cityOffers.length === 0 ? (
+          {offers.length === 0 ? (
             <EmptyOffers cityName={selectedCity} />
           ) : (
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {cityOffers.length} places to stay in {selectedCity}
+                  {offers.length} places to stay in {selectedCity}
                 </b>
                 <MainPageSort />
                 <OffersList
-                  offers={cityOffers}
+                  offers={offers}
                   onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
                 />
               </section>

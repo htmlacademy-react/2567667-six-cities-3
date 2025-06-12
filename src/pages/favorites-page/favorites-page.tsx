@@ -1,14 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import {Offer} from '../../types/offer.ts';
 import OfferCard from '../../components/offer-card/offer-card';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { Offer } from '../../types/offer';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-};
-
-export default function FavoritesPage({ offers }: FavoritesPageProps) {
+export default function FavoritesPage() {
+  const offers = useSelector((state: RootState) => state.offers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const favoritesByCity = favoriteOffers.reduce<Record<string, Offer[]>>((acc, offer) => {
     const cityName = offer.city.name;
