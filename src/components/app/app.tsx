@@ -1,5 +1,5 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {AppRoute , AuthorizationStatus} from '../../const.ts';
+import {AppRoute , AuthorizationStatus, DEFAULT_CITY} from '../../const.ts';
 import MainPage from '../../pages/main-page/main-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import LoginPage from '../../pages/login-page/login-page';
@@ -8,22 +8,28 @@ import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {HelmetProvider} from 'react-helmet-async';
 import Layout from '../layout/layout';
-import {Offer} from '../../types/offer.ts';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadOffers, setCity } from '../../store/action.ts';
+import { AppDispatch } from '../../store';
 
-type AppProps = {
-  offers: Offer[];
-};
+export default function App() {
+  const dispatch = useDispatch<AppDispatch>();
 
-export default function App({ offers }: AppProps) {
+  useEffect(() => {
+    dispatch(loadOffers());
+    dispatch(setCity(DEFAULT_CITY));
+  }, [dispatch]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
-            <Route index element={<MainPage offers={offers} />} />
+            <Route index element={<MainPage />} />
             <Route path={AppRoute.Favorites} element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage offers={offers} />
+                <FavoritesPage />
               </PrivateRoute>
             }
             />

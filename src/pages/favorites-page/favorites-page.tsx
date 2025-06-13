@@ -1,23 +1,12 @@
 import { Helmet } from 'react-helmet-async';
-import {Offer} from '../../types/offer.ts';
 import OfferCard from '../../components/offer-card/offer-card';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
+import { useSelector } from 'react-redux';
+import { selectFavoritesGroupedByCity } from '../../store/selectors';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-};
-
-export default function FavoritesPage({ offers }: FavoritesPageProps) {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const favoritesByCity = favoriteOffers.reduce<Record<string, Offer[]>>((acc, offer) => {
-    const cityName = offer.city.name;
-    if (!acc[cityName]) {
-      acc[cityName] = [];
-    }
-    acc[cityName].push(offer);
-    return acc;
-  }, {});
+export default function FavoritesPage() {
+  const favoritesByCity = useSelector(selectFavoritesGroupedByCity);
 
   return (
     <>

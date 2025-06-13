@@ -17,3 +17,11 @@ export const AuthorizationStatus = {
 export type AuthorizationStatus = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
 
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+
+export const DEFAULT_CITY = CITIES[0];
+
+export const MapConfig = {
+  BASE_URL: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  ATTRIBUTION:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+} as const;

@@ -1,23 +1,26 @@
 import OffersList from '../../components/offer-list/offer-list.tsx';
 import { Helmet } from 'react-helmet-async';
-import { Offer, Point } from '../../types/offer.ts';
+import { Point } from '../../types/offer.ts';
 import MainPageSort from '../../components/main-page-sort/main-page-sort.tsx';
 import MainPageLocations from '../../components/main-page-locations/main-page-locations.tsx';
 import Map from '../../components/map/map.tsx';
 import { useState } from 'react';
 import { handleOfferHover } from '../../components/map/map';
+import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCity } from '../../store/action.ts';
+import {selectCity, selectFilteredOffers, selectCityObject} from '../../store/selectors';
+import { AppDispatch } from '../../store';
 
-type MainPageProps = {
-  offers: Offer[];
-};
+export default function MainPage() {
+  const dispatch = useDispatch<AppDispatch>();
 
-export default function MainPage({ offers }: MainPageProps) {
-  const [selectedCity, setSelectedCity] = useState('Amsterdam');
+  const selectedCity = useSelector(selectCity);
+  const offers = useSelector(selectFilteredOffers);
+  const city = useSelector(selectCityObject);
+
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
-
-  const cityOffers = offers.filter((offer) => offer.city.name === selectedCity);
-  const city = cityOffers[0]?.city;
-  const points: Point[] = cityOffers.map((offer) => ({
+  const points: Point[] = offers.map((offer) => ({
     latitude: offer.location.latitude,
     longitude: offer.location.longitude,
     title: offer.title,
@@ -30,33 +33,39 @@ export default function MainPage({ offers }: MainPageProps) {
           6 Cities - Main Page
         </title>
       </Helmet>
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${offers.length === 0 ? 'page__main--index-empty' : ''}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <MainPageLocations selectedCity={selectedCity} onCityChange={setSelectedCity} />
+          <MainPageLocations
+            selectedCity={selectedCity}
+            onCityChange={(newCity) => dispatch(setCity(newCity))}
+          />
         </div>
 
         <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {cityOffers.length} places to stay in {selectedCity}
-              </b>
-              <MainPageSort />
+          {offers.length === 0 ? (
+            <EmptyOffers cityName={selectedCity} />
+          ) : (
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">
+                  {offers.length} places to stay in {selectedCity}
+                </b>
+                <MainPageSort />
+                <OffersList
+                  offers={offers}
+                  onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
+                />
+              </section>
 
-              <OffersList
-                offers={cityOffers}
-                onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
-              />
-            </section>
-
-            <div className="cities__right-section">
-              {city && points.length > 0 && (
-                <Map city={city} points={points} selectedPoint={selectedPoint} />
-              )}
+              <div className="cities__right-section">
+                {city && points.length > 0 && (
+                  <Map city={city} points={points} selectedPoint={selectedPoint} />
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </>
