@@ -10,14 +10,15 @@ import {HelmetProvider} from 'react-helmet-async';
 import Layout from '../layout/layout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadOffersByCity } from '../../store/action.ts';
+import { loadOffers, setCity } from '../../store/action.ts';
 import { AppDispatch } from '../../store';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(loadOffersByCity(DEFAULT_CITY));
+    dispatch(loadOffers());
+    dispatch(setCity(DEFAULT_CITY));
   }, [dispatch]);
 
   return (

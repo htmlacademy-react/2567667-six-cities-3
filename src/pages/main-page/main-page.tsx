@@ -8,15 +8,18 @@ import { useState } from 'react';
 import { handleOfferHover } from '../../components/map/map';
 import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { loadOffersByCity } from '../../store/action.ts';
-import { RootState, AppDispatch } from '../../store';
+import { setCity } from '../../store/action.ts';
+import {selectCity, selectFilteredOffers, selectCityObject} from '../../store/selectors';
+import { AppDispatch } from '../../store';
 
 export default function MainPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const selectedCity = useSelector((state: RootState) => state.city);
-  const offers = useSelector((state: RootState) => state.offers);
+
+  const selectedCity = useSelector(selectCity);
+  const offers = useSelector(selectFilteredOffers);
+  const city = useSelector(selectCityObject);
+
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);
-  const city = offers[0]?.city;
   const points: Point[] = offers.map((offer) => ({
     latitude: offer.location.latitude,
     longitude: offer.location.longitude,
@@ -35,7 +38,7 @@ export default function MainPage() {
         <div className="tabs">
           <MainPageLocations
             selectedCity={selectedCity}
-            onCityChange={(newCity) => dispatch(loadOffersByCity(newCity))}
+            onCityChange={(newCity) => dispatch(setCity(newCity))}
           />
         </div>
 

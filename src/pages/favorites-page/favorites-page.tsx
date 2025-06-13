@@ -3,20 +3,10 @@ import OfferCard from '../../components/offer-card/offer-card';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { Offer } from '../../types/offer';
+import { selectFavoritesGroupedByCity } from '../../store/selectors';
 
 export default function FavoritesPage() {
-  const offers = useSelector((state: RootState) => state.offers);
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const favoritesByCity = favoriteOffers.reduce<Record<string, Offer[]>>((acc, offer) => {
-    const cityName = offer.city.name;
-    if (!acc[cityName]) {
-      acc[cityName] = [];
-    }
-    acc[cityName].push(offer);
-    return acc;
-  }, {});
+  const favoritesByCity = useSelector(selectFavoritesGroupedByCity);
 
   return (
     <>

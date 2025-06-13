@@ -20,7 +20,8 @@ export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', '
 
 export const DEFAULT_CITY = CITIES[0];
 
-export const MAP_BASE_URL =
-  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-export const MAP_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+export const MapConfig = {
+  BASE_URL: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+  ATTRIBUTION:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+} as const;
