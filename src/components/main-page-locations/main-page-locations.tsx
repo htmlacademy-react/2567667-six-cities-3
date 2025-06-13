@@ -15,8 +15,8 @@ export default function MainPageLocations({ selectedCity, onCityChange }: MainPa
             <Link
               className={`locations__item-link tabs__item${city === selectedCity ? ' tabs__item--active' : ''}`}
               to={AppRoute.Root}
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={(evt) => {
+                evt.preventDefault();
                 onCityChange(city);
               }}
             >
