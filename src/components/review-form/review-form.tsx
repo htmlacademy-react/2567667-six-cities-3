@@ -13,8 +13,8 @@ export default function ReviewForm() {
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState<number>(0);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
+    evt.preventDefault();
   };
 
   return (

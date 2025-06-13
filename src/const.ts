@@ -25,3 +25,12 @@ export const MapConfig = {
   ATTRIBUTION:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 } as const;
+
+export enum SortType {
+  Popular = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHighToLow = 'Price: high to low',
+  TopRatedFirst = 'Top rated first',
+}
+
+export const SORT_OPTIONS = Object.values(SortType);
