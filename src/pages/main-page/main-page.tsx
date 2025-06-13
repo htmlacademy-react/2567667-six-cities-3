@@ -9,14 +9,14 @@ import { handleOfferHover } from '../../components/map/map';
 import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCity } from '../../store/action.ts';
-import {selectCity, selectFilteredOffers, selectCityObject} from '../../store/selectors';
+import { selectCity, selectSortedOffers, selectCityObject } from '../../store/selectors';
 import { AppDispatch } from '../../store';
 
 export default function MainPage() {
   const dispatch = useDispatch<AppDispatch>();
 
   const selectedCity = useSelector(selectCity);
-  const offers = useSelector(selectFilteredOffers);
+  const offers = useSelector(selectSortedOffers);
   const city = useSelector(selectCityObject);
 
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(undefined);

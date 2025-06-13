@@ -1,11 +1,12 @@
-import { DEFAULT_CITY } from '../const.ts';
+import { DEFAULT_CITY, SortType } from '../const.ts';
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers } from './action.ts';
+import { setCity, setOffers, setSortType } from './action.ts';
 import {InitialState} from '../types/state.ts';
 
 const initialState: InitialState = {
   city: DEFAULT_CITY,
   offers: [],
+  sortType: SortType.Popular,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -15,6 +16,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(setSortType, (state, action) => {
+      state.sortType = action.payload;
     });
 });
 
