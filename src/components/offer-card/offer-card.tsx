@@ -1,6 +1,5 @@
 import { Offer } from '../../types/offer.ts';
-import { Link } from 'react-router-dom';
-import {generatePath} from 'react-router-dom';
+import {generatePath, Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
 
@@ -12,7 +11,7 @@ type OfferCardProps = {
 };
 
 export default function OfferCard({
-  offer: { id, isFavorite, isPremium, images, price, rating, title, type },
+  offer: { id, isFavorite, isPremium, previewImage, price, rating, title, type },
   cardType = 'cities',
   onMouseEnter,
   onMouseLeave,
@@ -23,7 +22,6 @@ export default function OfferCard({
     : 'cities__image-wrapper place-card__image-wrapper';
   const imageWidth = cardType === 'favorites' ? 150 : 260;
   const imageHeight = cardType === 'favorites' ? 110 : 200;
-  const previewImage = images[0];
 
   return (
     <article
