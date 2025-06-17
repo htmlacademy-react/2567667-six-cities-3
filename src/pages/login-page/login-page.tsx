@@ -11,15 +11,15 @@ export default function LoginPage(){
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
     if (email && password.trim()) {
       try {
         await dispatch(loginAction({ email, password })).unwrap();
         navigate(AppRoute.Root);
       } catch {
-        alert('Login failed. Please check your credentials.');
+        setError('Login failed. Looser!');
       }
     }
   };
@@ -35,6 +35,11 @@ export default function LoginPage(){
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
+            {error && (
+              <p className="login__error" style={{ color: 'red', marginBottom: '15px' }}>
+                {error}
+              </p>
+            )}
             <form className="login__form form" onSubmit={(evt) => void handleSubmit(evt)}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
@@ -44,7 +49,7 @@ export default function LoginPage(){
                   name="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(evt) => setEmail(evt.target.value)}
                   required
                 />
               </div>
@@ -56,7 +61,7 @@ export default function LoginPage(){
                   name="password"
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(evt) => setPassword(evt.target.value)}
                   required
                 />
               </div>

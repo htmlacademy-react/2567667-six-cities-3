@@ -27,7 +27,9 @@ export default function App() {
     dispatch(checkAuthAction());
   }, [dispatch]);
 
-  if (isLoading) {
+  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+
+  if (isLoading || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
 

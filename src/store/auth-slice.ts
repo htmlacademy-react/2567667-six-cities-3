@@ -3,10 +3,12 @@ import { AuthorizationStatus } from '../const';
 
 interface AuthState {
   authorizationStatus: AuthorizationStatus;
+  userEmail: string | null;
 }
 
 const initialState: AuthState = {
   authorizationStatus: AuthorizationStatus.Unknown,
+  userEmail: null,
 };
 
 const authSlice = createSlice({
@@ -16,8 +18,11 @@ const authSlice = createSlice({
     setAuthorizationStatus(state, action: PayloadAction<AuthorizationStatus>) {
       state.authorizationStatus = action.payload;
     },
+    setUserEmail(state, action: PayloadAction<string | null>) {
+      state.userEmail = action.payload;
+    }
   },
 });
 
-export const { setAuthorizationStatus } = authSlice.actions;
+export const { setAuthorizationStatus, setUserEmail } = authSlice.actions;
 export default authSlice.reducer;

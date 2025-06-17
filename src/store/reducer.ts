@@ -3,6 +3,7 @@ import offersReducer from './offers-slice';
 import { setCity, setSortType } from './action';
 import { DEFAULT_CITY, SortType } from '../const';
 import offerDetailsReducer from './offer-details-slice';
+import authReducer from './auth-slice';
 
 const city = createReducer<string>(DEFAULT_CITY, (builder) => {
   builder.addCase(setCity, (_state, action) => action.payload);
@@ -17,4 +18,5 @@ export const reducer = combineReducers({
   offerDetails: offerDetailsReducer,
   city,
   sortType,
+  auth: authReducer
 });

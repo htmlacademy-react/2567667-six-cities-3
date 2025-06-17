@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AppDispatch, RootState } from '../types/state';
-import { setAuthorizationStatus } from './auth-slice';
+import { setAuthorizationStatus, setUserEmail } from './auth-slice';
 import { AuthorizationStatus } from '../const';
-import { saveToken } from '../services/token';
+import { saveToken, dropToken } from '../services/token';
 
 type LoginData = {
   email: string;
@@ -12,6 +12,7 @@ type LoginData = {
 
 type AuthResponse = {
   token: string;
+  email: string;
 };
 
 export const loginAction = createAsyncThunk<void, LoginData, {
@@ -25,8 +26,10 @@ export const loginAction = createAsyncThunk<void, LoginData, {
       const { data } = await api.post<AuthResponse>('/login', { email, password });
       saveToken(data.token);
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+      dispatch(setUserEmail(data.email));
     } catch {
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+      dispatch(setUserEmail(null));
       throw new Error('Login failed');
     }
   }
@@ -40,10 +43,27 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   'user/checkAuth',
   async (_arg, { dispatch, extra: api }) => {
     try {
-      await api.get('/login');
+      const { data } = await api.get<AuthResponse>('/login');
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+      dispatch(setUserEmail(data.email));
     } catch {
       dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+      dispatch(setUserEmail(null));
     }
   }
 );
+
+export const logoutAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: RootState;
+  extra: AxiosInstance;
+}>(
+  'user/logout',
+  async (_arg, { dispatch, extra: api }) => {
+    await api.delete('/logout');
+    dropToken();
+    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
+    dispatch(setUserEmail(null));
+  }
+);
+
