@@ -1,25 +1,33 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {AppRoute , AuthorizationStatus, DEFAULT_CITY} from '../../const.ts';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus, DEFAULT_CITY } from '../../const.ts';
 import MainPage from '../../pages/main-page/main-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import LoginPage from '../../pages/login-page/login-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import PrivateRoute from '../private-route/private-route.tsx';
-import {HelmetProvider} from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 import Layout from '../layout/layout';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadOffers, setCity } from '../../store/action.ts';
-import { AppDispatch } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOffers } from '../../store/offers-actions.ts';
+import { setCity } from '../../store/action.ts';
+import { AppDispatch, RootState } from '../../store';
+import Spinner from '../spinner/spinner';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
 
+  const isLoading = useSelector((state: RootState) => state.offers.isLoading);
+
   useEffect(() => {
-    dispatch(loadOffers());
+    dispatch(fetchOffers());
     dispatch(setCity(DEFAULT_CITY));
   }, [dispatch]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <HelmetProvider>
@@ -27,11 +35,13 @@ export default function App() {
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage />} />
-            <Route path={AppRoute.Favorites} element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage />
-              </PrivateRoute>
-            }
+            <Route
+              path={AppRoute.Favorites}
+              element={
+                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                  <FavoritesPage />
+                </PrivateRoute>
+              }
             />
             <Route path={AppRoute.Offer} element={<OfferPage />} />
             <Route path={AppRoute.Login} element={<LoginPage />} />

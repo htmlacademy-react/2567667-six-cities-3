@@ -1,25 +1,20 @@
-import { DEFAULT_CITY, SortType } from '../const.ts';
-import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setSortType } from './action.ts';
-import {InitialState} from '../types/state.ts';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import offersReducer from './offers-slice';
+import { setCity, setSortType } from './action';
+import { DEFAULT_CITY, SortType } from '../const';
+import offerDetailsReducer from './offer-details-slice';
 
-const initialState: InitialState = {
-  city: DEFAULT_CITY,
-  offers: [],
-  sortType: SortType.Popular,
-};
-
-const reducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(setCity, (state, action) => {
-      state.city = action.payload;
-    })
-    .addCase(setOffers, (state, action) => {
-      state.offers = action.payload;
-    })
-    .addCase(setSortType, (state, action) => {
-      state.sortType = action.payload;
-    });
+const city = createReducer<string>(DEFAULT_CITY, (builder) => {
+  builder.addCase(setCity, (_state, action) => action.payload);
 });
 
-export { reducer };
+const sortType = createReducer<SortType>(SortType.Popular, (builder) => {
+  builder.addCase(setSortType, (_state, action) => action.payload);
+});
+
+export const reducer = combineReducers({
+  offers: offersReducer,
+  offerDetails: offerDetailsReducer,
+  city,
+  sortType,
+});

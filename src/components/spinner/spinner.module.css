@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  margin-top: 20vh;
+  color: #4481c3;
+}
+
+.circle {
+  width: 80px;
+  height: 80px;
+  border: 8px solid #ccc;
+  border-top-color: #4481c3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
