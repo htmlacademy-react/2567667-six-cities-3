@@ -14,6 +14,7 @@ import { fetchOffers } from '../../store/offers-actions.ts';
 import { setCity } from '../../store/action.ts';
 import { AppDispatch, RootState } from '../../store';
 import Spinner from '../spinner/spinner';
+import { checkAuthAction } from '../../store/auth-actions.ts';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,6 +24,7 @@ export default function App() {
   useEffect(() => {
     dispatch(fetchOffers());
     dispatch(setCity(DEFAULT_CITY));
+    dispatch(checkAuthAction());
   }, [dispatch]);
 
   if (isLoading) {
