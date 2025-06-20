@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { AppDispatch, RootState } from '../../store';
 import { fetchOfferById } from '../../store/offer-details/offer-details-actions.ts';
-
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import Map from '../../components/map/map.tsx';
@@ -13,6 +11,7 @@ import Review from '../../components/review/review';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map';
 import { Offer } from '../../types/offer';
+import Spinner from '../../components/spinner/spinner';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,12 +20,17 @@ export default function OfferPage() {
   const offer: Offer | null = useSelector((state: RootState) => state.offerDetails.offer);
   const hasError = useSelector((state: RootState) => state.offerDetails.hasError);
   const allOffers: Offer[] = useSelector((state: RootState) => state.offers.offers);
+  const isLoading = useSelector((state: RootState) => state.offerDetails.isLoading);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchOfferById(id));
     }
   }, [dispatch, id]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   if (hasError || !offer) {
     return <NotFoundPage type="offer" />;
