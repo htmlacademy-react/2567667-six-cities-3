@@ -5,6 +5,7 @@ import {layoutConfig} from './layout-utils.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { logoutAction } from '../../store/auth/auth-actions.ts';
+import styles from './Layout.module.css';
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -29,7 +30,7 @@ export default function Layout() {
   };
 
   return (
-    <div className={`page ${rootClass}`}>
+    <div className={`page ${rootClass} ${styles.page}`}>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

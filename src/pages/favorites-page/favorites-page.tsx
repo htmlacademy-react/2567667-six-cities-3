@@ -4,9 +4,15 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import { useSelector } from 'react-redux';
 import { selectFavoritesGroupedByCity } from '../../store/selectors';
+import FavoritesEmpty from '../../components/favorites-empty/favorites-empty.tsx';
 
 export default function FavoritesPage() {
   const favoritesByCity = useSelector(selectFavoritesGroupedByCity);
+  const isFavoritesEmpty = Object.keys(favoritesByCity).length === 0;
+
+  if (isFavoritesEmpty) {
+    return <FavoritesEmpty />;
+  }
 
   return (
     <>
