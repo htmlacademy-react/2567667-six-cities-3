@@ -4,7 +4,7 @@ import { AppRoute, AuthorizationStatus } from '../../const.ts';
 import {layoutConfig} from './layout-utils.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { logoutAction } from '../../store/auth-actions';
+import { logoutAction } from '../../store/auth/auth-actions.ts';
 
 export default function Layout() {
   const { pathname } = useLocation();

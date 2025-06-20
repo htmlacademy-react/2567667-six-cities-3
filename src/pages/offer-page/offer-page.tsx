@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../store';
-import { fetchOfferById } from '../../store/offer-details-actions';
+import { fetchOfferById } from '../../store/offer-details/offer-details-actions.ts';
 
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';

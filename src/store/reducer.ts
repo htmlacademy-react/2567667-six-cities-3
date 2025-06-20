@@ -1,9 +1,9 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
-import offersReducer from './offers-slice';
+import offersReducer from './offers/offers-slice.ts';
 import { setCity, setSortType } from './action';
 import { DEFAULT_CITY, SortType } from '../const';
-import offerDetailsReducer from './offer-details-slice';
-import authReducer from './auth-slice';
+import offerDetailsReducer from './offer-details/offer-details-slice.ts';
+import authReducer from './auth/auth-slice.ts';
 
 const city = createReducer<string>(DEFAULT_CITY, (builder) => {
   builder.addCase(setCity, (_state, action) => action.payload);

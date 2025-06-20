@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchOffers } from './offers-actions.ts';
-import { Offer } from '../types/offer';
+import { Offer } from '../../types/offer.ts';
 
 type OffersState = {
   offers: Offer[];

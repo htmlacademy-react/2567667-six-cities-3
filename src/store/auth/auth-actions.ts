@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { AppDispatch, RootState } from '../types/state';
-import { setAuthorizationStatus, setUserEmail } from './auth-slice';
-import { AuthorizationStatus } from '../const';
-import { saveToken, dropToken } from '../services/token';
+import { AppDispatch, RootState } from '../../types/state.ts';
+import { setAuthorizationStatus, setUserEmail } from './auth-slice.ts';
+import { AuthorizationStatus } from '../../const.ts';
+import { saveToken, dropToken } from '../../services/token.ts';
 
 type LoginData = {
   email: string;

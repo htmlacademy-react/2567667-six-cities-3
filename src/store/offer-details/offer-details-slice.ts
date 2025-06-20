@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Offer } from '../types/offer';
-import { fetchOfferById } from './offer-details-actions';
+import { Offer } from '../../types/offer.ts';
+import { fetchOfferById } from './offer-details-actions.ts';
 
 type OfferDetailsState = {
   offer: Offer | null;

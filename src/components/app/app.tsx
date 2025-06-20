@@ -10,11 +10,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import Layout from '../layout/layout';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchOffers } from '../../store/offers-actions.ts';
+import { fetchOffers } from '../../store/offers/offers-actions.ts';
 import { setCity } from '../../store/action.ts';
 import { AppDispatch, RootState } from '../../store';
 import Spinner from '../spinner/spinner';
-import { checkAuthAction } from '../../store/auth-actions.ts';
+import { checkAuthAction } from '../../store/auth/auth-actions.ts';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();

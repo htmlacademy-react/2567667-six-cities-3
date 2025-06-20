@@ -3,7 +3,7 @@ import {Link, useNavigate } from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginAction } from '../../store/auth-actions';
+import { loginAction } from '../../store/auth/auth-actions.ts';
 import { AppDispatch } from '../../store';
 
 export default function LoginPage(){
