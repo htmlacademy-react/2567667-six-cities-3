@@ -5,7 +5,7 @@ import {layoutConfig} from './layout-utils.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { logoutAction } from '../../store/auth/auth-actions.ts';
-import styles from './Layout.module.css';
+import styles from './layout.module.css';
 
 export default function Layout() {
   const { pathname } = useLocation();
