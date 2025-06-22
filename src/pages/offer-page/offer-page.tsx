@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { fetchOfferById } from '../../store/offer-details/offer-details-actions.ts';
+import {fetchOfferById, fetchReviewsByOfferId} from '../../store/offer-details/offer-details-actions.ts';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import Map from '../../components/map/map.tsx';
@@ -12,6 +12,7 @@ import NotFoundPage from '../not-found-page/not-found-page';
 import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map';
 import { Offer } from '../../types/offer';
 import Spinner from '../../components/spinner/spinner';
+import {AuthorizationStatus} from '../../const.ts';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,10 +22,14 @@ export default function OfferPage() {
   const hasError = useSelector((state: RootState) => state.offerDetails.hasError);
   const allOffers: Offer[] = useSelector((state: RootState) => state.offers.offers);
   const isLoading = useSelector((state: RootState) => state.offerDetails.isLoading);
+  const reviews = useSelector((state: RootState) => state.offerDetails.reviews);
+  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   useEffect(() => {
     if (id) {
       dispatch(fetchOfferById(id));
+      dispatch(fetchReviewsByOfferId(id));
     }
   }, [dispatch, id]);
 
@@ -109,7 +114,7 @@ export default function OfferPage() {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <Review isAuth reviews={[]} />
+                <Review isAuth={isAuth} reviews={reviews} offerId={offer.id} />
               </section>
             </div>
           </div>

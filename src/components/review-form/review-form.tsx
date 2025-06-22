@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import RatingStar from '../rating-star/rating-star';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { postReview } from '../../store/offer-details/offer-details-actions';
+import { RATINGS } from '../../const.ts';
+import styles from './review-form.module.css';
 
-const RATINGS = [
-  { value: 5, label: 'perfect' },
-  { value: 4, label: 'good' },
-  { value: 3, label: 'not bad' },
-  { value: 2, label: 'badly' },
-  { value: 1, label: 'terribly' },
-];
+type ReviewFormProps = {
+  offerId: string;
+};
 
-export default function ReviewForm() {
+export default function ReviewForm({ offerId }: ReviewFormProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const isSending = useSelector((state: RootState) => state.offerDetails.isReviewsLoading);
+  const postError = useSelector((state: RootState) => state.offerDetails.postReviewError);
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState<number>(0);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
+    if (reviewText.length >= 50 && reviewText.length <= 300 && rating) {
+      dispatch(postReview({ comment: reviewText, rating, offerId }));
+      setReviewText('');
+      setRating(0);
+    }
   };
 
   return (
@@ -38,19 +47,26 @@ export default function ReviewForm() {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}
+        disabled={isSending}
       />
       <div className="reviews__button-wrapper">
-        <p className="reviews__help">
-          To submit review please make sure to set{' '}
-          <span className="reviews__star">rating</span> and describe your stay with at least{' '}
-          <b className="reviews__text-amount">50 characters</b>.
-        </p>
+        {postError ? (
+          <p className={styles.errorMessage}>
+            Something went wrong while sending your review. Please try again later.
+          </p>
+        ) : (
+          <p className="reviews__help">
+            To submit review please make sure to set{' '}
+            <span className="reviews__star">rating</span> and describe your stay with at least{' '}
+            <b className="reviews__text-amount">50 characters</b>.
+          </p>
+        )}
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={reviewText.length < 50 || !rating}
+          disabled={reviewText.length < 50 || reviewText.length > 300 || !rating || isSending}
         >
-          Submit
+          {isSending ? 'Sending...' : 'Submit'}
         </button>
       </div>
     </form>

@@ -19,7 +19,7 @@ export default function LoginPage(){
         await dispatch(loginAction({ email, password })).unwrap();
         navigate(AppRoute.Root);
       } catch {
-        setError('Login failed. Looser!');
+        setError('Invalid email or password. Please try again.');
       }
     }
   };
