@@ -13,6 +13,7 @@ import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map
 import { Offer } from '../../types/offer';
 import Spinner from '../../components/spinner/spinner';
 import {AuthorizationStatus} from '../../const.ts';
+import {getRatingWidth} from '../../utils/rating.ts';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -76,7 +77,7 @@ export default function OfferPage() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${(offer.rating / 5) * 100}%` }} />
+                  <span style={{ width: getRatingWidth(offer.rating) }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{offer.rating}</span>
