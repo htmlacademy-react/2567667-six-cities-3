@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from './index';
 import { Offer } from '../types/offer';
-import { SortType } from '../const';
+import { SortType, AuthorizationStatus } from '../const';
 
 export const selectOffers = (state: RootState): Offer[] => state.offers.offers;
 export const selectCity = (state: RootState): string => state.city;
@@ -52,3 +52,9 @@ export const selectSortedOffers = createSelector(
   }
 );
 
+export const selectAuthorizationStatus = (state: RootState): AuthorizationStatus => state.auth.authorizationStatus;
+export const selectIsLoading = (state: RootState): boolean => state.offers.isLoading;
+export const selectIsReviewsLoading = (state: RootState): boolean => state.offerDetails.isReviewsLoading;
+export const selectPostReviewError = (state: RootState): string | null => state.offerDetails.postReviewError;
+export const selectNearbyOffers = (state: RootState): Offer[] => state.offerDetails.nearbyOffers;
+export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.offerDetails.isNearbyOffersLoading;

@@ -12,14 +12,15 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOffers } from '../../store/offers/offers-actions.ts';
 import { setCity } from '../../store/action.ts';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch } from '../../store';
 import Spinner from '../spinner/spinner';
 import { checkAuthAction } from '../../store/auth/auth-actions.ts';
+import {selectAuthorizationStatus, selectIsLoading} from '../../store/selectors.ts';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const isLoading = useSelector((state: RootState) => state.offers.isLoading);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(fetchOffers());
@@ -27,7 +28,7 @@ export default function App() {
     dispatch(checkAuthAction());
   }, [dispatch]);
 
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
 
   if (isLoading || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
@@ -42,7 +43,7 @@ export default function App() {
             <Route
               path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <PrivateRoute authorizationStatus={authorizationStatus}>
                   <FavoritesPage />
                 </PrivateRoute>
               }
