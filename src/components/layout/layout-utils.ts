@@ -33,7 +33,7 @@ export const layoutConfig: Record<AppRoute, {
   [AppRoute.NotFound]: {
     rootClass: 'page--gray page--main',
     mainClass: 'page__main page__main--index',
-    showUser: false,
+    showUser: true,
     showFooter: false,
   },
 };

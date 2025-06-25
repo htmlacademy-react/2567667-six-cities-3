@@ -33,6 +33,12 @@ export type Review = {
   date: string;
 };
 
+export type ReviewPostData = {
+  comment: string;
+  rating: number;
+  offerId: string;
+};
+
 export interface Offer {
   id: string;
   title: string;

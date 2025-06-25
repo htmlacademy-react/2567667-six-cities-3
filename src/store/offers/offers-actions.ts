@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { Offer } from '../types/offer';
-import { AppDispatch, RootState } from './index';
+import { Offer } from '../../types/offer.ts';
+import { AppDispatch, RootState } from '../index.ts';
 
 export const fetchOffers = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
