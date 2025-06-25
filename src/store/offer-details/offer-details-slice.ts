@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Offer, Review } from '../../types/offer.ts';
-import { fetchOfferById } from './offer-details-actions.ts';
-import { fetchReviewsByOfferId, postReview } from './offer-details-actions.ts';
+import { fetchOfferById, fetchReviewsByOfferId, postReview, fetchNearbyOffers } from './offer-details-actions.ts';
 
 type OfferDetailsState = {
   offer: Offer | null;
@@ -10,6 +9,8 @@ type OfferDetailsState = {
   reviews: Review[];
   isReviewsLoading: boolean;
   postReviewError: string | null;
+  nearbyOffers: Offer[];
+  isNearbyOffersLoading: boolean;
 };
 
 const initialState: OfferDetailsState = {
@@ -19,6 +20,8 @@ const initialState: OfferDetailsState = {
   reviews: [],
   isReviewsLoading: false,
   postReviewError: null,
+  nearbyOffers: [],
+  isNearbyOffersLoading: false,
 };
 
 const offerDetailsSlice = createSlice({
@@ -62,6 +65,17 @@ const offerDetailsSlice = createSlice({
       .addCase(postReview.rejected, (state, action) => {
         state.isReviewsLoading = false;
         state.postReviewError = action.error.message || 'Failed to send review';
+      });
+    builder
+      .addCase(fetchNearbyOffers.pending, (state) => {
+        state.isNearbyOffersLoading = true;
+      })
+      .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
+        state.nearbyOffers = action.payload;
+        state.isNearbyOffersLoading = false;
+      })
+      .addCase(fetchNearbyOffers.rejected, (state) => {
+        state.isNearbyOffersLoading = false;
       });
   },
 });

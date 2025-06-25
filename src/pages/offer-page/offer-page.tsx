@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import {fetchOfferById, fetchReviewsByOfferId} from '../../store/offer-details/offer-details-actions.ts';
+import {fetchOfferById, fetchReviewsByOfferId, fetchNearbyOffers} from '../../store/offer-details/offer-details-actions.ts';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
 import Map from '../../components/map/map.tsx';
@@ -14,6 +14,7 @@ import { Offer } from '../../types/offer';
 import Spinner from '../../components/spinner/spinner';
 import {AuthorizationStatus} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
+import {selectNearbyOffers, selectIsNearbyOffersLoading} from '../../store/selectors.ts';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,30 +22,28 @@ export default function OfferPage() {
 
   const offer: Offer | null = useSelector((state: RootState) => state.offerDetails.offer);
   const hasError = useSelector((state: RootState) => state.offerDetails.hasError);
-  const allOffers: Offer[] = useSelector((state: RootState) => state.offers.offers);
   const isLoading = useSelector((state: RootState) => state.offerDetails.isLoading);
   const reviews = useSelector((state: RootState) => state.offerDetails.reviews);
   const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const nearbyOffers = useSelector(selectNearbyOffers).slice(0, 3);
+  const isNearbyLoading = useSelector(selectIsNearbyOffersLoading);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchOfferById(id));
       dispatch(fetchReviewsByOfferId(id));
+      dispatch(fetchNearbyOffers(id));
     }
   }, [dispatch, id]);
 
-  if (isLoading) {
+  if (isLoading || isNearbyLoading) {
     return <Spinner />;
   }
 
   if (hasError || !offer) {
     return <NotFoundPage type="offer" />;
   }
-
-  const nearbyOffers = allOffers
-    .filter((item) => item.id !== offer.id && item.city.name === offer.city.name)
-    .slice(0, 3);
 
   const currentPoint = getPointFromOffer(offer);
   const allPoints = [...getPointsFromOffers(nearbyOffers), currentPoint];

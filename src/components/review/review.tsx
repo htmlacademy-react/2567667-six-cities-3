@@ -3,6 +3,7 @@ import ReviewsList from '../reviews-list/reviews-list';
 import ReviewForm from '../review-form/review-form';
 import { Review as ReviewType } from '../../types/offer';
 import styles from './review.module.css';
+import { sortReviewsByDate } from '../../utils/date';
 
 type ReviewsProps = {
   isAuth: boolean;
@@ -11,9 +12,11 @@ type ReviewsProps = {
 };
 
 export default function Review({ isAuth, reviews, offerId }: ReviewsProps) {
+  const sortedReviews = sortReviewsByDate(reviews);
+
   return (
     <>
-      <ReviewsList reviews={reviews} />
+      <ReviewsList reviews={sortedReviews} />
       {isAuth ? (
         <ReviewForm offerId={offerId} />
       ) : (
@@ -26,3 +29,4 @@ export default function Review({ isAuth, reviews, offerId }: ReviewsProps) {
     </>
   );
 }
+

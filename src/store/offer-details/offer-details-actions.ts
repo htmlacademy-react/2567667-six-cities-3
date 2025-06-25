@@ -25,3 +25,11 @@ export const postReview = createAsyncThunk<void, ReviewPostData, { extra: AxiosI
     dispatch(fetchReviewsByOfferId(offerId));
   }
 );
+
+export const fetchNearbyOffers = createAsyncThunk<Offer[], string, { extra: AxiosInstance }>(
+  'offerDetails/fetchNearby',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.get<Offer[]>(`/offers/${offerId}/nearby`);
+    return data;
+  }
+);

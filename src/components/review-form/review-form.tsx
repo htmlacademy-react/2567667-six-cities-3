@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import RatingStar from '../rating-star/rating-star';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch } from '../../store';
 import { postReview } from '../../store/offer-details/offer-details-actions';
 import { RATINGS } from '../../const.ts';
 import styles from './review-form.module.css';
+import { selectIsReviewsLoading, selectPostReviewError } from '../../store/selectors.ts';
 
 type ReviewFormProps = {
   offerId: string;
@@ -12,17 +13,20 @@ type ReviewFormProps = {
 
 export default function ReviewForm({ offerId }: ReviewFormProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const isSending = useSelector((state: RootState) => state.offerDetails.isReviewsLoading);
-  const postError = useSelector((state: RootState) => state.offerDetails.postReviewError);
+  const isSending = useSelector(selectIsReviewsLoading);
+  const postError = useSelector(selectPostReviewError);
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState<number>(0);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
-    if (reviewText.length >= 50 && reviewText.length <= 300 && rating) {
-      dispatch(postReview({ comment: reviewText, rating, offerId }));
-      setReviewText('');
-      setRating(0);
+    if (reviewText.length >= 50 && reviewText.length <= 300 && rating && !isSending) {
+      dispatch(postReview({ comment: reviewText, rating, offerId }))
+        .unwrap()
+        .then(() => {
+          setReviewText('');
+          setRating(0);
+        });
     }
   };
 
@@ -35,8 +39,9 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
             key={value}
             star={value}
             currentRating={rating}
-            onChange={() => setRating(value)}
+            onChange={() => !isSending && setRating(value)}
             title={label}
+            disabled={isSending}
           />
         ))}
       </div>
@@ -46,7 +51,7 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
+        onChange={(evt) => !isSending && setReviewText(evt.target.value)}
         disabled={isSending}
       />
       <div className="reviews__button-wrapper">
