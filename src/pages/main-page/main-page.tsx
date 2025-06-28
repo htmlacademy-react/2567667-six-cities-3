@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { handleOfferHover } from '../../components/map/map';
 import EmptyOffers from '../../components/empty-offers/empty-offers.tsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCity } from '../../store/action.ts';
+import { setCity } from '../../store/offers/offers-slice';
 import { selectCity, selectSortedOffers, selectCityObject } from '../../store/selectors';
 import { AppDispatch } from '../../store';
 

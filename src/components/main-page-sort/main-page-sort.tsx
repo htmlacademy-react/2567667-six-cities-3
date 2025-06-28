@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { selectSortType } from '../../store/selectors';
-import { setSortType } from '../../store/action';
+import { setSortType } from '../../store/offers/offers-slice';
 import { SortType, SORT_OPTIONS } from '../../const';
 import { AppDispatch } from '../../store';
 

@@ -11,7 +11,7 @@ import Layout from '../layout/layout';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOffers } from '../../store/offers/offers-actions.ts';
-import { setCity } from '../../store/action.ts';
+import { setCity } from '../../store/offers/offers-slice';
 import { AppDispatch } from '../../store';
 import Spinner from '../spinner/spinner';
 import { checkAuthAction } from '../../store/auth/auth-actions.ts';

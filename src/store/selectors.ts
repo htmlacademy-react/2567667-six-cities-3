@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from './index';
-import { Offer } from '../types/offer';
+import { Offer, Review } from '../types/offer';
 import { SortType, AuthorizationStatus } from '../const';
 
 export const selectOffers = (state: RootState): Offer[] => state.offers.offers;
-export const selectCity = (state: RootState): string => state.city;
-export const selectSortType = (state: RootState): SortType => state.sortType;
+export const selectCity = (state: RootState): string => state.offers.city;
+export const selectSortType = (state: RootState): SortType => state.offers.sortType;
 
 export const selectFilteredOffers = createSelector(
   [selectOffers, selectCity],
@@ -41,20 +41,25 @@ export const selectSortedOffers = createSelector(
   (offers: Offer[], sortType: SortType): Offer[] => {
     switch (sortType) {
       case SortType.PriceLowToHigh:
-        return [...offers].sort((offerA, offerB) => offerA.price - offerB.price);
+        return [...offers].sort((a, b) => a.price - b.price);
       case SortType.PriceHighToLow:
-        return [...offers].sort((offerA, offerB) => offerB.price - offerA.price);
+        return [...offers].sort((a, b) => b.price - a.price);
       case SortType.TopRatedFirst:
-        return [...offers].sort((offerA, offerB) => offerB.rating - offerA.rating);
+        return [...offers].sort((a, b) => b.rating - a.rating);
       default:
         return offers;
     }
   }
 );
 
-export const selectAuthorizationStatus = (state: RootState): AuthorizationStatus => state.auth.authorizationStatus;
+export const selectAuthorizationStatus = (state: RootState): AuthorizationStatus =>
+  state.auth.authorizationStatus;
+
 export const selectIsLoading = (state: RootState): boolean => state.offers.isLoading;
-export const selectIsReviewsLoading = (state: RootState): boolean => state.offerDetails.isReviewsLoading;
-export const selectPostReviewError = (state: RootState): string | null => state.offerDetails.postReviewError;
-export const selectNearbyOffers = (state: RootState): Offer[] => state.offerDetails.nearbyOffers;
-export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.offerDetails.isNearbyOffersLoading;
+
+export const selectReviews = (state: RootState): Review[] => state.reviews.reviews;
+export const selectIsReviewsLoading = (state: RootState): boolean => state.reviews.isLoading;
+export const selectPostReviewError = (state: RootState): string | null => state.reviews.error;
+
+export const selectNearbyOffers = (state: RootState): Offer[] => state.nearbyOffers.nearbyOffers;
+export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.nearbyOffers.isLoading;
