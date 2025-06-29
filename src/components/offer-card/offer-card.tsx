@@ -2,7 +2,7 @@ import { Offer } from '../../types/offer.ts';
 import {generatePath, Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 type OfferCardProps = {
   offer: Offer;
@@ -11,7 +11,7 @@ type OfferCardProps = {
   onMouseLeave?: () => void;
 };
 
-const OfferCard = React.memo(({
+const OfferCard = ({
   offer: { id, isFavorite, isPremium, previewImage, price, rating, title, type },
   cardType = 'cities',
   onMouseEnter,
@@ -87,8 +87,6 @@ const OfferCard = React.memo(({
       </div>
     </article>
   );
-});
+};
 
-OfferCard.displayName = 'OfferCard';
-
-export default OfferCard;
+export default memo(OfferCard);

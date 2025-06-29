@@ -1,6 +1,6 @@
 import { Offer } from '../../types/offer.ts';
 import OfferCard from '../offer-card/offer-card.tsx';
-import React, { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 
 type OffersListProps = {
   offers: Offer[];
@@ -32,5 +32,4 @@ const OffersList = ({ offers, onOfferHover }: OffersListProps) => {
   );
 };
 
-OffersList.displayName = 'OffersList';
-export default React.memo(OffersList);
+export default memo(OffersList);

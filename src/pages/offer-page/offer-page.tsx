@@ -96,8 +96,8 @@ export default function OfferPage() {
               </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
-                <div className={`offer__host-user user ${offer.host.isPro ? 'offer__avatar-wrapper--pro' : ''}`}>
-                  <div className="offer__avatar-wrapper user__avatar-wrapper">
+                <div className="offer__host-user user">
+                  <div className={`offer__avatar-wrapper user__avatar-wrapper ${offer.host.isPro ? 'offer__avatar-wrapper--pro' : ''}`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={offer.host.avatarUrl}
