@@ -63,3 +63,8 @@ export const selectPostReviewError = (state: RootState): string | null => state.
 
 export const selectNearbyOffers = (state: RootState): Offer[] => state.nearbyOffers.nearbyOffers;
 export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.nearbyOffers.isLoading;
+export const selectNearbyOffersShort = createSelector([selectNearbyOffers], (offers) => offers.slice(0, 3));
+
+export const selectOffer = (state: RootState) => state.offerDetails.offer;
+export const selectOfferError = (state: RootState) => state.offerDetails.hasError;
+export const selectOfferLoading = (state: RootState) => state.offerDetails.isLoading;

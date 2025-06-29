@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch } from '../../store';
 import {fetchOfferById, fetchReviewsByOfferId, fetchNearbyOffers} from '../../store/offer-details/offer-details-actions.ts';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
@@ -10,24 +10,23 @@ import Map from '../../components/map/map.tsx';
 import Review from '../../components/review/review';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map';
-import { Offer } from '../../types/offer';
 import Spinner from '../../components/spinner/spinner';
 import {AuthorizationStatus} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
-import {selectNearbyOffers, selectIsNearbyOffersLoading, selectReviews} from '../../store/selectors';
+import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading} from '../../store/selectors';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
 
-  const offer: Offer | null = useSelector((state: RootState) => state.offerDetails.offer);
-  const hasError = useSelector((state: RootState) => state.offerDetails.hasError);
-  const isLoading = useSelector((state: RootState) => state.offerDetails.isLoading);
-  const reviews = useSelector((state: RootState) => selectReviews(state));
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
+  const offer = useSelector(selectOffer);
+  const hasError = useSelector(selectOfferError);
+  const isLoading = useSelector(selectOfferLoading);
+  const reviews = useSelector(selectReviews);
+  const isNearbyLoading = useSelector(selectIsNearbyOffersLoading);
+  const nearbyOffers = useSelector(selectNearbyOffersShort);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
-  const nearbyOffers = useSelector((state: RootState) => selectNearbyOffers(state)).slice(0, 3);
-  const isNearbyLoading = useSelector((state: RootState) => selectIsNearbyOffersLoading(state));
 
   useEffect(() => {
     if (id) {
