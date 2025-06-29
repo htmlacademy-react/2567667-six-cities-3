@@ -41,11 +41,11 @@ export const selectSortedOffers = createSelector(
   (offers: Offer[], sortType: SortType): Offer[] => {
     switch (sortType) {
       case SortType.PriceLowToHigh:
-        return [...offers].sort((a, b) => a.price - b.price);
+        return [...offers].sort((offerA, offerB) => offerA.price - offerB.price);
       case SortType.PriceHighToLow:
-        return [...offers].sort((a, b) => b.price - a.price);
+        return [...offers].sort((offerA, offerB) => offerB.price - offerA.price);
       case SortType.TopRatedFirst:
-        return [...offers].sort((a, b) => b.rating - a.rating);
+        return [...offers].sort((offerA, offerB) => offerB.rating - offerA.rating);
       default:
         return offers;
     }
