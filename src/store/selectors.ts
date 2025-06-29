@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from './index';
-import { Offer } from '../types/offer';
+import { Offer, Review } from '../types/offer';
 import { SortType, AuthorizationStatus } from '../const';
 
 export const selectOffers = (state: RootState): Offer[] => state.offers.offers;
-export const selectCity = (state: RootState): string => state.city;
-export const selectSortType = (state: RootState): SortType => state.sortType;
+export const selectCity = (state: RootState): string => state.offers.city;
+export const selectSortType = (state: RootState): SortType => state.offers.sortType;
 
 export const selectFilteredOffers = createSelector(
   [selectOffers, selectCity],
@@ -52,9 +52,19 @@ export const selectSortedOffers = createSelector(
   }
 );
 
-export const selectAuthorizationStatus = (state: RootState): AuthorizationStatus => state.auth.authorizationStatus;
+export const selectAuthorizationStatus = (state: RootState): AuthorizationStatus =>
+  state.auth.authorizationStatus;
+
 export const selectIsLoading = (state: RootState): boolean => state.offers.isLoading;
-export const selectIsReviewsLoading = (state: RootState): boolean => state.offerDetails.isReviewsLoading;
-export const selectPostReviewError = (state: RootState): string | null => state.offerDetails.postReviewError;
-export const selectNearbyOffers = (state: RootState): Offer[] => state.offerDetails.nearbyOffers;
-export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.offerDetails.isNearbyOffersLoading;
+
+export const selectReviews = (state: RootState): Review[] => state.reviews.reviews;
+export const selectIsReviewsLoading = (state: RootState): boolean => state.reviews.isLoading;
+export const selectPostReviewError = (state: RootState): string | null => state.reviews.error;
+
+export const selectNearbyOffers = (state: RootState): Offer[] => state.nearbyOffers.nearbyOffers;
+export const selectIsNearbyOffersLoading = (state: RootState): boolean => state.nearbyOffers.isLoading;
+export const selectNearbyOffersShort = createSelector([selectNearbyOffers], (offers) => offers.slice(0, 3));
+
+export const selectOffer = (state: RootState) => state.offerDetails.offer;
+export const selectOfferError = (state: RootState) => state.offerDetails.hasError;
+export const selectOfferLoading = (state: RootState) => state.offerDetails.isLoading;

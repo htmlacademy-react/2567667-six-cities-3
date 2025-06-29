@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch } from '../../store';
 import {fetchOfferById, fetchReviewsByOfferId, fetchNearbyOffers} from '../../store/offer-details/offer-details-actions.ts';
 import OfferInsideList from '../../components/offer-inside-list/offer-inside-list';
 import NearPlacesList from '../../components/near-places-list/near-places-list';
@@ -10,24 +10,23 @@ import Map from '../../components/map/map.tsx';
 import Review from '../../components/review/review';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map';
-import { Offer } from '../../types/offer';
 import Spinner from '../../components/spinner/spinner';
 import {AuthorizationStatus} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
-import {selectNearbyOffers, selectIsNearbyOffersLoading} from '../../store/selectors.ts';
+import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading} from '../../store/selectors';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
 
-  const offer: Offer | null = useSelector((state: RootState) => state.offerDetails.offer);
-  const hasError = useSelector((state: RootState) => state.offerDetails.hasError);
-  const isLoading = useSelector((state: RootState) => state.offerDetails.isLoading);
-  const reviews = useSelector((state: RootState) => state.offerDetails.reviews);
-  const authorizationStatus = useSelector((state: RootState) => state.auth.authorizationStatus);
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
-  const nearbyOffers = useSelector(selectNearbyOffers).slice(0, 3);
+  const offer = useSelector(selectOffer);
+  const hasError = useSelector(selectOfferError);
+  const isLoading = useSelector(selectOfferLoading);
+  const reviews = useSelector(selectReviews);
   const isNearbyLoading = useSelector(selectIsNearbyOffersLoading);
+  const nearbyOffers = useSelector(selectNearbyOffersShort);
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
   useEffect(() => {
     if (id) {
@@ -57,7 +56,7 @@ export default function OfferPage() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {(offer.images).slice(0, 6).map((src: string) => (
+              {offer.images.slice(0, 6).map((src: string) => (
                 <div className="offer__image-wrapper" key={src}>
                   <img className="offer__image" src={src} alt="Offer preview" />
                 </div>
@@ -97,7 +96,7 @@ export default function OfferPage() {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className={`offer__avatar-wrapper ${offer.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
+                  <div className={`offer__avatar-wrapper user__avatar-wrapper ${offer.host.isPro ? 'offer__avatar-wrapper--pro' : ''}`}>
                     <img
                       className="offer__avatar user__avatar"
                       src={offer.host.avatarUrl}
@@ -124,9 +123,7 @@ export default function OfferPage() {
         </section>
         <div className="container">
           <section className="near-places places">
-            <h2 className="near-places__title">
-              Other places in the neighbourhood
-            </h2>
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <NearPlacesList nearbyOffers={nearbyOffers} />
           </section>
         </div>

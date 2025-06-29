@@ -2,6 +2,7 @@ import { Offer } from '../../types/offer.ts';
 import {generatePath, Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
+import { memo, useMemo } from 'react';
 
 type OfferCardProps = {
   offer: Offer;
@@ -10,18 +11,30 @@ type OfferCardProps = {
   onMouseLeave?: () => void;
 };
 
-export default function OfferCard({
+const OfferCard = ({
   offer: { id, isFavorite, isPremium, previewImage, price, rating, title, type },
   cardType = 'cities',
   onMouseEnter,
   onMouseLeave,
-}: OfferCardProps) {
-  const articleClass = cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card';
-  const imageWrapperClass = cardType === 'favorites'
-    ? 'favorites__image-wrapper place-card__image-wrapper'
-    : 'cities__image-wrapper place-card__image-wrapper';
-  const imageWidth = cardType === 'favorites' ? 150 : 260;
-  const imageHeight = cardType === 'favorites' ? 110 : 200;
+}: OfferCardProps) => {
+  const articleClass = useMemo(
+    () => cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card',
+    [cardType]
+  );
+
+  const imageWrapperClass = useMemo(
+    () => cardType === 'favorites'
+      ? 'favorites__image-wrapper place-card__image-wrapper'
+      : 'cities__image-wrapper place-card__image-wrapper',
+    [cardType]
+  );
+
+  const imageSize = useMemo(
+    () => cardType === 'favorites'
+      ? { width: 150, height: 110 }
+      : { width: 260, height: 200 },
+    [cardType]
+  );
 
   return (
     <article
@@ -39,8 +52,8 @@ export default function OfferCard({
           <img
             className="place-card__image"
             src={previewImage}
-            width={imageWidth}
-            height={imageHeight}
+            width={imageSize.width}
+            height={imageSize.height}
             alt={title}
           />
         </Link>
@@ -74,4 +87,6 @@ export default function OfferCard({
       </div>
     </article>
   );
-}
+};
+
+export default memo(OfferCard);
