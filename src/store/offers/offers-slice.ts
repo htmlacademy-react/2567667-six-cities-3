@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchOffers } from './offers-actions.ts';
 import { Offer } from '../../types/offer.ts';
 import { DEFAULT_CITY, SortType } from '../../const';
+import { toggleFavoriteStatus } from '../favorites/favorites-actions.ts';
 
 type OffersState = {
   offers: Offer[];
@@ -44,6 +45,13 @@ export const offersSlice = createSlice({
         state.isLoading = false;
         state.hasError = true;
       });
+    builder.addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
+      const updatedOffer = action.payload;
+      const index = state.offers.findIndex((offer) => offer.id === updatedOffer.id);
+      if (index !== -1) {
+        state.offers[index] = updatedOffer;
+      }
+    });
   },
 });
 

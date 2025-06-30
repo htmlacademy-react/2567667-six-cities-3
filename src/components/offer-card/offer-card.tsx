@@ -1,8 +1,12 @@
 import { Offer } from '../../types/offer.ts';
-import {generatePath, Link} from 'react-router-dom';
-import {AppRoute} from '../../const.ts';
+import {generatePath, Link, useNavigate} from 'react-router-dom';
+import {AppRoute, AuthorizationStatus} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
 import { memo, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
+import { selectAuthorizationStatus } from '../../store/selectors.ts';
+import { AppDispatch } from '../../store';
 
 type OfferCardProps = {
   offer: Offer;
@@ -17,6 +21,10 @@ const OfferCard = ({
   onMouseEnter,
   onMouseLeave,
 }: OfferCardProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+
   const articleClass = useMemo(
     () => cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card',
     [cardType]
@@ -35,6 +43,15 @@ const OfferCard = ({
       : { width: 260, height: 200 },
     [cardType]
   );
+
+  const handleFavoriteClick = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+
+    dispatch(toggleFavoriteStatus({ offerId: id, status: Number(!isFavorite) }));
+  };
 
   return (
     <article
@@ -67,11 +84,14 @@ const OfferCard = ({
           <button
             className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
+            onClick={handleFavoriteClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
+            <span className="visually-hidden">
+              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
+            </span>
           </button>
         </div>
         <div className="place-card__rating rating">

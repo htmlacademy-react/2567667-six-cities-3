@@ -68,3 +68,5 @@ export const selectNearbyOffersShort = createSelector([selectNearbyOffers], (off
 export const selectOffer = (state: RootState) => state.offerDetails.offer;
 export const selectOfferError = (state: RootState) => state.offerDetails.hasError;
 export const selectOfferLoading = (state: RootState) => state.offerDetails.isLoading;
+
+export const selectUserEmail = (state: RootState) => state.auth.userEmail;

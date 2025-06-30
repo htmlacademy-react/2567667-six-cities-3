@@ -2,11 +2,20 @@ import { Helmet } from 'react-helmet-async';
 import OfferCard from '../../components/offer-card/offer-card';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectFavoritesGroupedByCity } from '../../store/selectors';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty.tsx';
+import {useEffect} from 'react';
+import { AppDispatch } from '../../store';
+import { fetchFavoriteOffers } from '../../store/favorites/favorites-actions.ts';
 
 export default function FavoritesPage() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchFavoriteOffers());
+  }, [dispatch]);
+
   const favoritesByCity = useSelector(selectFavoritesGroupedByCity);
   const isFavoritesEmpty = Object.keys(favoritesByCity).length === 0;
 
