@@ -1,10 +1,12 @@
 import {Helmet} from 'react-helmet-async';
 import {Link, useNavigate } from 'react-router-dom';
 import {AppRoute} from '../../const.ts';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '../../store/auth/auth-actions.ts';
 import { AppDispatch } from '../../store';
+import { setCity } from '../../store/offers/offers-slice.ts';
+import { getRandomCity } from '../../utils/random-city.ts';
 
 export default function LoginPage(){
   const dispatch = useDispatch<AppDispatch>();
@@ -22,6 +24,11 @@ export default function LoginPage(){
         setError('Invalid email or password. Please try again.');
       }
     }
+  };
+
+  const randomCity = useMemo(() => getRandomCity(), []);
+  const handleCityClick = () => {
+    dispatch(setCity(randomCity));
   };
 
   return (
@@ -72,8 +79,12 @@ export default function LoginPage(){
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to={AppRoute.Login}>
-                <span>Amsterdam</span>
+              <Link
+                className="locations__item-link"
+                to={AppRoute.Root}
+                onClick={handleCityClick}
+              >
+                <span>{randomCity}</span>
               </Link>
             </div>
           </section>
