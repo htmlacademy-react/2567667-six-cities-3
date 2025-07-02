@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
 import { selectAuthorizationStatus, selectIsFavoritesUpdating } from '../../store/selectors.ts';
 import { AppDispatch } from '../../store';
+import BookmarkButton from '../bookmark-button/bookmark-button';
 
 type OfferCardProps = {
   offer: Offer;
@@ -27,21 +28,23 @@ function OfferCardComponent({
   const isUpdating = useSelector(selectIsFavoritesUpdating);
 
   const articleClass = useMemo(
-    () => cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card',
+    () => (cardType === 'favorites'
+      ? 'favorites__card place-card'
+      : 'cities__card place-card'),
     [cardType]
   );
 
   const imageWrapperClass = useMemo(
-    () => cardType === 'favorites'
+    () => (cardType === 'favorites'
       ? 'favorites__image-wrapper place-card__image-wrapper'
-      : 'cities__image-wrapper place-card__image-wrapper',
+      : 'cities__image-wrapper place-card__image-wrapper'),
     [cardType]
   );
 
   const imageSize = useMemo(
-    () => cardType === 'favorites'
+    () => (cardType === 'favorites'
       ? { width: 150, height: 110 }
-      : { width: 260, height: 200 },
+      : { width: 260, height: 200 }),
     [cardType]
   );
 
@@ -50,7 +53,6 @@ function OfferCardComponent({
       navigate(AppRoute.Login);
       return;
     }
-
     dispatch(toggleFavoriteStatus({ offerId: id, status: Number(!isFavorite) }));
   };
 
@@ -82,19 +84,14 @@ function OfferCardComponent({
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
-            type="button"
+          <BookmarkButton
+            isActive={isFavorite}
+            isDisabled={isUpdating}
             onClick={handleFavoriteClick}
-            disabled={isUpdating}
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">
-              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
-            </span>
-          </button>
+            size="small"
+            buttonClass="place-card__bookmark-button"
+            iconClass="place-card__bookmark-icon"
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

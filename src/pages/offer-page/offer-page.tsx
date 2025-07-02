@@ -15,6 +15,7 @@ import {AuthorizationStatus, AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
 import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading, selectIsFavoritesUpdating} from '../../store/selectors';
 import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button.tsx';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
@@ -85,19 +86,14 @@ export default function OfferPage() {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
-                <button
-                  className={`offer__bookmark-button button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
-                  type="button"
+                <BookmarkButton
+                  isActive={offer.isFavorite}
+                  isDisabled={isUpdating}
                   onClick={handleFavoriteClick}
-                  disabled={isUpdating}
-                >
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">
-                    {offer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
-                  </span>
-                </button>
+                  size="large"
+                  buttonClass="offer__bookmark-button"
+                  iconClass="offer__bookmark-icon"
+                />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
