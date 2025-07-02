@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
@@ -11,14 +11,16 @@ import Review from '../../components/review/review';
 import NotFoundPage from '../not-found-page/not-found-page';
 import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map';
 import Spinner from '../../components/spinner/spinner';
-import {AuthorizationStatus} from '../../const.ts';
+import {AuthorizationStatus, AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
-import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading} from '../../store/selectors';
+import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading, selectIsFavoritesUpdating} from '../../store/selectors';
+import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button.tsx';
 
 export default function OfferPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const offer = useSelector(selectOffer);
   const hasError = useSelector(selectOfferError);
   const isLoading = useSelector(selectOfferLoading);
@@ -27,6 +29,7 @@ export default function OfferPage() {
   const nearbyOffers = useSelector(selectNearbyOffersShort);
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const isUpdating = useSelector(selectIsFavoritesUpdating);
 
   useEffect(() => {
     if (id) {
@@ -35,6 +38,17 @@ export default function OfferPage() {
       dispatch(fetchNearbyOffers(id));
     }
   }, [dispatch, id]);
+
+  const handleFavoriteClick = () => {
+    if (!offer) {
+      return;
+    }
+    if (!isAuth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+    dispatch(toggleFavoriteStatus({ offerId: offer.id, status: Number(!offer.isFavorite) }));
+  };
 
   if (isLoading || isNearbyLoading) {
     return <Spinner />;
@@ -72,6 +86,14 @@ export default function OfferPage() {
               )}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
+                <BookmarkButton
+                  isActive={offer.isFavorite}
+                  isDisabled={isUpdating}
+                  onClick={handleFavoriteClick}
+                  size="large"
+                  buttonClass="offer__bookmark-button"
+                  iconClass="offer__bookmark-icon"
+                />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

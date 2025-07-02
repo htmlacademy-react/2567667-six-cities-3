@@ -1,17 +1,22 @@
-import {Link, Outlet, useLocation} from 'react-router-dom';
-import Logo from '../logo/logo.tsx';
-import { AppRoute, AuthorizationStatus } from '../../const.ts';
-import {layoutConfig} from './layout-utils.ts';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import {layoutConfig} from './layout-utils.ts';
+import Logo from '../logo/logo.tsx';
+import { AppDispatch } from '../../store';
 import { logoutAction } from '../../store/auth/auth-actions.ts';
+import { selectFavoriteOffers, selectAuthorizationStatus, selectUserEmail } from '../../store/selectors.ts';
 import styles from './layout.module.css';
 
 export default function Layout() {
   const { pathname } = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { authorizationStatus, userEmail } = useSelector((state: RootState) => state.auth);
+
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const userEmail = useSelector(selectUserEmail);
+  const favoriteOffersCount = useSelector(selectFavoriteOffers).length;
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return null;
   }
@@ -22,8 +27,8 @@ export default function Layout() {
     }
     return layoutConfig[pathname as AppRoute] || layoutConfig[AppRoute.NotFound];
   };
-  const config = getLayoutConfig();
-  const { rootClass = '', showUser, showFooter } = config;
+
+  const { rootClass = '', showUser, showFooter } = getLayoutConfig();
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -46,17 +51,11 @@ export default function Layout() {
                         <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
                           <div className="header__avatar-wrapper user__avatar-wrapper" />
                           <span className="header__user-name user__name">{userEmail}</span>
-                          <span className="header__favorite-count">3</span>
+                          <span className="header__favorite-count">{favoriteOffersCount}</span>
                         </Link>
                       </li>
                       <li className="header__nav-item">
-                        <Link
-                          className="header__nav-link"
-                          to={AppRoute.Root}
-                          onClick={() => {
-                            handleLogout();
-                          }}
-                        >
+                        <Link className="header__nav-link" to={AppRoute.Root} onClick={handleLogout}>
                           <span className="header__signout">Sign out</span>
                         </Link>
                       </li>

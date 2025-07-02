@@ -16,10 +16,10 @@ import { AppDispatch } from '../../store';
 import Spinner from '../spinner/spinner';
 import { checkAuthAction } from '../../store/auth/auth-actions.ts';
 import {selectAuthorizationStatus, selectIsLoading} from '../../store/selectors.ts';
+import ScrollToTop from '../scroll-to-top/scroll-to-top.tsx';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
-
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path={AppRoute.Root} element={<Layout />}>
             <Route index element={<MainPage />} />

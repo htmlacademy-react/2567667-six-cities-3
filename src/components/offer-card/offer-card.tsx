@@ -1,8 +1,13 @@
 import { Offer } from '../../types/offer.ts';
-import {generatePath, Link} from 'react-router-dom';
-import {AppRoute} from '../../const.ts';
+import {generatePath, Link, useNavigate} from 'react-router-dom';
+import {AppRoute, AuthorizationStatus} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
 import { memo, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
+import { selectAuthorizationStatus, selectIsFavoritesUpdating } from '../../store/selectors.ts';
+import { AppDispatch } from '../../store';
+import BookmarkButton from '../bookmark-button/bookmark-button';
 
 type OfferCardProps = {
   offer: Offer;
@@ -11,30 +16,45 @@ type OfferCardProps = {
   onMouseLeave?: () => void;
 };
 
-const OfferCard = ({
+function OfferCardComponent({
   offer: { id, isFavorite, isPremium, previewImage, price, rating, title, type },
   cardType = 'cities',
   onMouseEnter,
   onMouseLeave,
-}: OfferCardProps) => {
+}: OfferCardProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const isUpdating = useSelector(selectIsFavoritesUpdating);
+
   const articleClass = useMemo(
-    () => cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card',
+    () => (cardType === 'favorites'
+      ? 'favorites__card place-card'
+      : 'cities__card place-card'),
     [cardType]
   );
 
   const imageWrapperClass = useMemo(
-    () => cardType === 'favorites'
+    () => (cardType === 'favorites'
       ? 'favorites__image-wrapper place-card__image-wrapper'
-      : 'cities__image-wrapper place-card__image-wrapper',
+      : 'cities__image-wrapper place-card__image-wrapper'),
     [cardType]
   );
 
   const imageSize = useMemo(
-    () => cardType === 'favorites'
+    () => (cardType === 'favorites'
       ? { width: 150, height: 110 }
-      : { width: 260, height: 200 },
+      : { width: 260, height: 200 }),
     [cardType]
   );
+
+  const handleFavoriteClick = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+      return;
+    }
+    dispatch(toggleFavoriteStatus({ offerId: id, status: Number(!isFavorite) }));
+  };
 
   return (
     <article
@@ -64,15 +84,14 @@ const OfferCard = ({
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+          <BookmarkButton
+            isActive={isFavorite}
+            isDisabled={isUpdating}
+            onClick={handleFavoriteClick}
+            size="small"
+            buttonClass="place-card__bookmark-button"
+            iconClass="place-card__bookmark-icon"
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -87,6 +106,7 @@ const OfferCard = ({
       </div>
     </article>
   );
-};
+}
 
-export default memo(OfferCard);
+const OfferCard = memo(OfferCardComponent);
+export default OfferCard;
