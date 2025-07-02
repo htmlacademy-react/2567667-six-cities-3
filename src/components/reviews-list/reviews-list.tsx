@@ -7,17 +7,20 @@ type ReviewsListProps = {
   totalCount: number;
 };
 
-const ReviewsList = ({ reviews, totalCount }: ReviewsListProps) => (
-  <>
-    <h2 className="reviews__title">
-      Reviews &middot; <span className="reviews__amount">{totalCount}</span>
-    </h2>
-    <ul className="reviews__list">
-      {reviews.map((review) => (
-        <ReviewItem key={review.id} review={review} />
-      ))}
-    </ul>
-  </>
-);
+function ReviewsListComponent({ reviews, totalCount }: ReviewsListProps) {
+  return (
+    <>
+      <h2 className="reviews__title">
+        Reviews &middot; <span className="reviews__amount">{totalCount}</span>
+      </h2>
+      <ul className="reviews__list">
+        {reviews.map((review) => (
+          <ReviewItem key={review.id} review={review} />
+        ))}
+      </ul>
+    </>
+  );
+}
 
-export default memo(ReviewsList);
+const ReviewsList = memo(ReviewsListComponent);
+export default ReviewsList;

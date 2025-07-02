@@ -15,12 +15,12 @@ type OfferCardProps = {
   onMouseLeave?: () => void;
 };
 
-const OfferCard = ({
+function OfferCardComponent({
   offer: { id, isFavorite, isPremium, previewImage, price, rating, title, type },
   cardType = 'cities',
   onMouseEnter,
   onMouseLeave,
-}: OfferCardProps) => {
+}: OfferCardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const authorizationStatus = useSelector(selectAuthorizationStatus);
@@ -109,6 +109,7 @@ const OfferCard = ({
       </div>
     </article>
   );
-};
+}
 
-export default memo(OfferCard);
+const OfferCard = memo(OfferCardComponent);
+export default OfferCard;

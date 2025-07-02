@@ -5,7 +5,7 @@ import { setSortType } from '../../store/offers/offers-slice';
 import { SortType, SORT_OPTIONS } from '../../const';
 import { AppDispatch } from '../../store';
 
-const MainPageSort = () => {
+function MainPageSortComponent() {
   const dispatch = useDispatch<AppDispatch>();
   const selectedSortType = useSelector(selectSortType);
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +46,7 @@ const MainPageSort = () => {
       </ul>
     </form>
   );
-};
+}
 
-export default memo(MainPageSort);
+const MainPageSort = memo(MainPageSortComponent);
+export default MainPageSort;
