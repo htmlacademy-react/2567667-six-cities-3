@@ -37,15 +37,19 @@ const favoritesSlice = createSlice({
       })
       .addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
         const updatedOffer = action.payload;
-        const index = state.favorites.findIndex((o) => o.id === updatedOffer.id);
+        const offerIndex = state.favorites.findIndex(
+          (offer) => offer.id === updatedOffer.id
+        );
         if (updatedOffer.isFavorite) {
-          if (index === -1) {
+          if (offerIndex === -1) {
             state.favorites.push(updatedOffer);
           } else {
-            state.favorites[index] = updatedOffer;
+            state.favorites[offerIndex] = updatedOffer;
           }
         } else {
-          state.favorites = state.favorites.filter((o) => o.id !== updatedOffer.id);
+          state.favorites = state.favorites.filter(
+            (offer) => offer.id !== updatedOffer.id
+          );
         }
         state.isUpdating = false;
       })
