@@ -42,3 +42,5 @@ export const RATINGS = [
 ];
 
 export const SORT_OPTIONS = Object.values(SortType);
+
+export const MAX_REVIEWS_COUNT = 10;

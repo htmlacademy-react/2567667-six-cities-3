@@ -4,6 +4,7 @@ import ReviewForm from '../review-form/review-form';
 import { Review as ReviewType } from '../../types/offer';
 import styles from './review.module.css';
 import { sortReviewsByDate } from '../../utils/date';
+import { MAX_REVIEWS_COUNT } from '../../const.ts';
 
 type ReviewsProps = {
   isAuth: boolean;
@@ -13,10 +14,11 @@ type ReviewsProps = {
 
 export default function Review({ isAuth, reviews, offerId }: ReviewsProps) {
   const sortedReviews = sortReviewsByDate(reviews);
+  const visibleReviews = sortedReviews.slice(0, MAX_REVIEWS_COUNT);
 
   return (
     <>
-      <ReviewsList reviews={sortedReviews} />
+      <ReviewsList reviews={visibleReviews} totalCount={reviews.length} />
       {isAuth ? (
         <ReviewForm offerId={offerId} />
       ) : (
@@ -29,4 +31,3 @@ export default function Review({ isAuth, reviews, offerId }: ReviewsProps) {
     </>
   );
 }
-
