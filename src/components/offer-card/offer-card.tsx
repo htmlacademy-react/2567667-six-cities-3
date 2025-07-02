@@ -5,7 +5,7 @@ import {getRatingWidth} from '../../utils/rating.ts';
 import { memo, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
-import { selectAuthorizationStatus } from '../../store/selectors.ts';
+import { selectAuthorizationStatus, selectIsFavoritesUpdating } from '../../store/selectors.ts';
 import { AppDispatch } from '../../store';
 
 type OfferCardProps = {
@@ -24,6 +24,7 @@ const OfferCard = ({
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const isUpdating = useSelector(selectIsFavoritesUpdating);
 
   const articleClass = useMemo(
     () => cardType === 'favorites' ? 'favorites__card place-card' : 'cities__card place-card',
@@ -85,6 +86,7 @@ const OfferCard = ({
             className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
             onClick={handleFavoriteClick}
+            disabled={isUpdating}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark" />

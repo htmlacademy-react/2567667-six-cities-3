@@ -13,7 +13,7 @@ import { getPointFromOffer, getPointsFromOffers } from '../../components/map/map
 import Spinner from '../../components/spinner/spinner';
 import {AuthorizationStatus, AppRoute} from '../../const.ts';
 import {getRatingWidth} from '../../utils/rating.ts';
-import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading} from '../../store/selectors';
+import {selectNearbyOffersShort, selectIsNearbyOffersLoading, selectReviews, selectAuthorizationStatus, selectOffer, selectOfferError, selectOfferLoading, selectIsFavoritesUpdating} from '../../store/selectors';
 import { toggleFavoriteStatus } from '../../store/favorites/favorites-actions.ts';
 
 export default function OfferPage() {
@@ -28,6 +28,7 @@ export default function OfferPage() {
   const nearbyOffers = useSelector(selectNearbyOffersShort);
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const isUpdating = useSelector(selectIsFavoritesUpdating);
 
   useEffect(() => {
     if (id) {
@@ -88,6 +89,7 @@ export default function OfferPage() {
                   className={`offer__bookmark-button button ${offer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
                   type="button"
                   onClick={handleFavoriteClick}
+                  disabled={isUpdating}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />

@@ -70,3 +70,5 @@ export const selectOfferError = (state: RootState) => state.offerDetails.hasErro
 export const selectOfferLoading = (state: RootState) => state.offerDetails.isLoading;
 
 export const selectUserEmail = (state: RootState) => state.auth.userEmail;
+export const selectIsFavoritesUpdating = (state: RootState): boolean =>
+  state.favorites.isUpdating;

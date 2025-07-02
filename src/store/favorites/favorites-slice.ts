@@ -5,11 +5,13 @@ import { Offer } from '../../types/offer';
 type FavoritesState = {
   favorites: Offer[];
   isLoading: boolean;
+  isUpdating: boolean;
 };
 
 const initialState: FavoritesState = {
   favorites: [],
   isLoading: false,
+  isUpdating: false,
 };
 
 const favoritesSlice = createSlice({
@@ -29,20 +31,27 @@ const favoritesSlice = createSlice({
         state.isLoading = false;
       });
 
-    builder.addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
-      const updatedOffer = action.payload;
-      const index = state.favorites.findIndex((o) => o.id === updatedOffer.id);
-
-      if (updatedOffer.isFavorite) {
-        if (index === -1) {
-          state.favorites.push(updatedOffer);
+    builder
+      .addCase(toggleFavoriteStatus.pending, (state) => {
+        state.isUpdating = true;
+      })
+      .addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
+        const index = state.favorites.findIndex((o) => o.id === updatedOffer.id);
+        if (updatedOffer.isFavorite) {
+          if (index === -1) {
+            state.favorites.push(updatedOffer);
+          } else {
+            state.favorites[index] = updatedOffer;
+          }
         } else {
-          state.favorites[index] = updatedOffer;
+          state.favorites = state.favorites.filter((o) => o.id !== updatedOffer.id);
         }
-      } else {
-        state.favorites = state.favorites.filter((o) => o.id !== updatedOffer.id);
-      }
-    });
+        state.isUpdating = false;
+      })
+      .addCase(toggleFavoriteStatus.rejected, (state) => {
+        state.isUpdating = false;
+      });
   },
 });
 
