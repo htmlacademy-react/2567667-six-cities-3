@@ -19,8 +19,8 @@ export const selectCityObject = createSelector(
 );
 
 export const selectFavoriteOffers = createSelector(
-  [selectOffers],
-  (offers) => offers.filter((offer) => offer.isFavorite)
+  [(state: RootState) => state.favorites.favorites],
+  (favorites) => favorites
 );
 
 export const selectFavoritesGroupedByCity = createSelector(
