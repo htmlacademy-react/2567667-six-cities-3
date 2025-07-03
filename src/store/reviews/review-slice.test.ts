@@ -1,3 +1,4 @@
+import { Action } from '@reduxjs/toolkit';
 import reducer from './reviews-slice';
 import { fetchReviewsByOfferId, postReview } from '../offer-details/offer-details-actions';
 import { mockReview } from '../../utils/mocks';
@@ -47,18 +48,18 @@ describe('reviewsSlice reducer', () => {
     const action = {
       type: postReview.rejected.type,
       error: { message: errorMessage },
-    };
+    } as Action & { error?: { message?: string } };
     const state = reducer({ ...initialState, isLoading: true }, action);
     expect(state.isLoading).toBe(false);
     expect(state.error).toBe(errorMessage);
   });
 
   it('should fallback to default error message if message is missing', () => {
-    const action = {
+    const action: Action & { error?: { message?: string } } = {
       type: postReview.rejected.type,
       error: {},
     };
-    const state = reducer(initialState, action as any);
+    const state = reducer(initialState, action);
     expect(state.error).toBe('Failed to send review');
   });
 });
