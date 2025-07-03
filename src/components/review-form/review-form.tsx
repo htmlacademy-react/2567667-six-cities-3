@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RatingStar from '../rating-star/rating-star';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { postReview } from '../../store/offer-details/offer-details-actions';
+import { postReview, fetchReviewsByOfferId } from '../../store/offer-details/offer-details-actions';
 import { RATINGS } from '../../const.ts';
 import styles from './review-form.module.css';
 import { selectIsReviewsLoading, selectPostReviewError } from '../../store/selectors.ts';
@@ -23,10 +23,12 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
     if (reviewText.length >= 50 && reviewText.length <= 300 && rating && !isSending) {
       dispatch(postReview({ comment: reviewText, rating, offerId }))
         .unwrap()
+        .then(() => dispatch(fetchReviewsByOfferId(offerId)).unwrap())
         .then(() => {
           setReviewText('');
           setRating(0);
-        });
+        })
+        .catch(() => {});
     }
   };
 

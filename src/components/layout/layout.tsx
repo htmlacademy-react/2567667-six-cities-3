@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import {layoutConfig} from './layout-utils.ts';
 import Logo from '../logo/logo.tsx';
@@ -7,11 +7,12 @@ import { AppDispatch } from '../../store';
 import { logoutAction } from '../../store/auth/auth-actions.ts';
 import { selectFavoriteOffers, selectAuthorizationStatus, selectUserEmail } from '../../store/selectors.ts';
 import styles from './layout.module.css';
+import React from 'react';
 
 export default function Layout() {
   const { pathname } = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const userEmail = useSelector(selectUserEmail);
   const favoriteOffersCount = useSelector(selectFavoriteOffers).length;
@@ -30,8 +31,15 @@ export default function Layout() {
 
   const { rootClass = '', showUser, showFooter } = getLayoutConfig();
 
-  const handleLogout = () => {
-    dispatch(logoutAction());
+  const handleLogout = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (pathname === AppRoute.Favorites) {
+      dispatch(logoutAction()).then(() => {
+        navigate(AppRoute.Login);
+      });
+    } else {
+      dispatch(logoutAction());
+    }
   };
 
   return (
@@ -62,8 +70,11 @@ export default function Layout() {
                     </>
                   ) : (
                     <li className="header__nav-item user">
-                      <Link className="header__nav-link" to={AppRoute.Login}>
-                        <div className="header__avatar-wrapper user__avatar-wrapper header__nav-link--profile" />
+                      <Link
+                        className="header__nav-link header__nav-link--profile"
+                        to={AppRoute.Login}
+                      >
+                        <div className="header__avatar-wrapper user__avatar-wrapper" />
                         <span className="header__login">Sign in</span>
                       </Link>
                     </li>
