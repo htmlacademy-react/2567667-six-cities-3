@@ -4,7 +4,7 @@ import { Offer } from '../../types/offer.ts';
 import { DEFAULT_CITY, SortType } from '../../const';
 import { toggleFavoriteStatus } from '../favorites/favorites-actions.ts';
 
-type OffersState = {
+export type OffersState = {
   offers: Offer[];
   isLoading: boolean;
   hasError: boolean;
