@@ -19,7 +19,9 @@ export default function LoginPage(){
     if (email && password.trim()) {
       try {
         await dispatch(loginAction({ email, password })).unwrap();
-        navigate(AppRoute.Root);
+        setTimeout(() => {
+          navigate(AppRoute.Root);
+        }, 500);
       } catch {
         setError('Invalid email or password. Please try again.');
       }
@@ -47,7 +49,7 @@ export default function LoginPage(){
                 {error}
               </p>
             )}
-            <form className="login__form form" onSubmit={(evt) => void handleSubmit(evt)}>
+            <form className="login__form form" action="#" method="post" onSubmit={(evt) => void handleSubmit(evt)}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -70,6 +72,9 @@ export default function LoginPage(){
                   value={password}
                   onChange={(evt) => setPassword(evt.target.value)}
                   required
+                  minLength={2}
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+                  title="Пароль должен содержать хотя бы одну латинскую букву и одну цифру"
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">

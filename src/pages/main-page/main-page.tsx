@@ -14,7 +14,6 @@ import { AppDispatch } from '../../store';
 
 export default function MainPage() {
   const dispatch = useDispatch<AppDispatch>();
-
   const selectedCity = useSelector(selectCity);
   const offers = useSelector(selectSortedOffers);
   const city = useSelector(selectCityObject);
@@ -25,6 +24,8 @@ export default function MainPage() {
     longitude: offer.location.longitude,
     title: offer.title,
   }));
+  const normalizedCity = selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1).toLowerCase();
+  const placeText = offers.length === 1 ? 'place' : 'places';
 
   return (
     <>
@@ -41,16 +42,15 @@ export default function MainPage() {
             onCityChange={(newCity) => dispatch(setCity(newCity))}
           />
         </div>
-
         <div className="cities">
           {offers.length === 0 ? (
-            <EmptyOffers cityName={selectedCity} />
+            <EmptyOffers cityName={normalizedCity} />
           ) : (
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {offers.length} places to stay in {selectedCity}
+                  {offers.length} {placeText} to stay in {normalizedCity}
                 </b>
                 <MainPageSort />
                 <OffersList
@@ -58,7 +58,6 @@ export default function MainPage() {
                   onOfferHover={(offer) => handleOfferHover(offer, points, setSelectedPoint)}
                 />
               </section>
-
               <div className="cities__right-section">
                 {city && points.length > 0 && (
                   <Map city={city} points={points} selectedPoint={selectedPoint} />
