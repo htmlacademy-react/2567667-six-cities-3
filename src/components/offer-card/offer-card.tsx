@@ -27,35 +27,34 @@ function OfferCardComponent({
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const isUpdating = useSelector(selectIsFavoritesUpdating);
 
-  const articleClass = useMemo(
-    () => {
-      switch (cardType) {
-        case 'favorites':
-          return 'favorites__card place-card';
-        case 'near-places':
-          return 'near-places__card place-card';
-        case 'cities':
-        default:
-          return 'cities__card place-card';
-      }
-    },
-    [cardType]
-  );
+  const articleClass = useMemo(() => {
+    switch (cardType) {
+      case 'favorites':
+        return 'favorites__card place-card';
+      case 'near-places':
+        return 'near-places__card place-card';
+      case 'cities':
+      default:
+        return 'cities__card place-card';
+    }
+  }, [cardType]);
 
-  const imageWrapperClass = useMemo(
-    () => {
-      switch (cardType) {
-        case 'favorites':
-          return 'favorites__image-wrapper place-card__image-wrapper';
-        case 'near-places':
-          return 'near-places__image-wrapper place-card__image-wrapper';
-        case 'cities':
-        default:
-          return 'cities__image-wrapper place-card__image-wrapper';
-      }
-    },
-    [cardType]
-  );
+  const imageWrapperClass = useMemo(() => {
+    switch (cardType) {
+      case 'favorites':
+        return 'favorites__image-wrapper place-card__image-wrapper';
+      case 'near-places':
+        return 'near-places__image-wrapper place-card__image-wrapper';
+      case 'cities':
+      default:
+        return 'cities__image-wrapper place-card__image-wrapper';
+    }
+  }, [cardType]);
+
+  const infoWrapperClass =
+    cardType === 'favorites'
+      ? 'favorites__card-info place-card__info'
+      : 'place-card__info';
 
   const handleFavoriteClick = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
@@ -82,10 +81,11 @@ function OfferCardComponent({
             className="place-card__image"
             src={previewImage}
             alt={title}
+            {...(cardType === 'favorites' ? { width: 150, height: 110 } : {})}
           />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={infoWrapperClass}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">€{price}</b>
