@@ -40,7 +40,7 @@ export default function Layout() {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Logo />
+              <Logo width={81} height={41} />
             </div>
             {showUser && (
               <nav className="header__nav">
@@ -63,6 +63,7 @@ export default function Layout() {
                   ) : (
                     <li className="header__nav-item user">
                       <Link className="header__nav-link" to={AppRoute.Login}>
+                        <div className="header__avatar-wrapper user__avatar-wrapper header__nav-link--profile" />
                         <span className="header__login">Sign in</span>
                       </Link>
                     </li>
@@ -79,13 +80,7 @@ export default function Layout() {
       {showFooter && (
         <footer className="footer container">
           <Link className="footer__logo-link" to={AppRoute.Root}>
-            <img
-              className="footer__logo"
-              src="img/logo.svg"
-              alt="6 cities logo"
-              width="64"
-              height="33"
-            />
+            <Logo width={64} height={33} />
           </Link>
         </footer>
       )}
