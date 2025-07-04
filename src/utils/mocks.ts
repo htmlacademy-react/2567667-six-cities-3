@@ -53,3 +53,14 @@ export const mockReview: Review = {
   comment: 'Great place!',
   date: '2023-05-01T12:00:00.000Z',
 };
+
+export const getMockDataSlice = (overrides = {}) => ({
+  offers: [],
+  isLoading: false,
+  hasError: false,
+  city: {
+    name: 'Paris',
+    location: { latitude: 48.8566, longitude: 2.3522, zoom: 10 },
+  },
+  ...overrides,
+});
