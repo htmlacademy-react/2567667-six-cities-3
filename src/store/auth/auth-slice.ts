@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../../const.ts';
+import { logoutAction } from './auth-actions.ts';
 
 interface AuthState {
   authorizationStatus: AuthorizationStatus;
@@ -20,7 +21,13 @@ const authSlice = createSlice({
     },
     setUserEmail(state, action: PayloadAction<string | null>) {
       state.userEmail = action.payload;
-    }
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutAction.fulfilled, (state) => {
+      state.authorizationStatus = AuthorizationStatus.NoAuth;
+      state.userEmail = null;
+    });
   },
 });
 

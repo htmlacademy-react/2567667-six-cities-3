@@ -1,35 +1,38 @@
 import {Helmet} from 'react-helmet-async';
-import {Link, useNavigate } from 'react-router-dom';
-import {AppRoute} from '../../const.ts';
-import { FormEvent, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
+import { FormEvent, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '../../store/auth/auth-actions.ts';
 import { AppDispatch } from '../../store';
 import { setCity } from '../../store/offers/offers-slice.ts';
 import { getRandomCity } from '../../utils/random-city.ts';
+import { selectAuthorizationStatus } from '../../store/selectors.ts';
 
 export default function LoginPage(){
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const randomCity = useMemo(() => getRandomCity(), []);
+  const handleCityClick = () => {
+    dispatch(setCity(randomCity));
+  };
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (email && password.trim()) {
       try {
         await dispatch(loginAction({ email, password })).unwrap();
-        navigate(AppRoute.Root);
       } catch {
         setError('Invalid email or password. Please try again.');
       }
     }
   };
 
-  const randomCity = useMemo(() => getRandomCity(), []);
-  const handleCityClick = () => {
-    dispatch(setCity(randomCity));
-  };
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return <Navigate to={AppRoute.Root} />;
+  }
 
   return (
     <>
@@ -47,7 +50,12 @@ export default function LoginPage(){
                 {error}
               </p>
             )}
-            <form className="login__form form" onSubmit={(evt) => void handleSubmit(evt)}>
+            <form
+              className="login__form form"
+              action="#"
+              method="post"
+              onSubmit={(evt) => void handleSubmit(evt)}
+            >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
@@ -70,6 +78,9 @@ export default function LoginPage(){
                   value={password}
                   onChange={(evt) => setPassword(evt.target.value)}
                   required
+                  minLength={2}
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+                  title="Пароль должен содержать хотя бы одну латинскую букву и одну цифру"
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">
