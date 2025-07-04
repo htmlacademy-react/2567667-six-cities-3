@@ -27,6 +27,7 @@ function BookmarkButtonComponent({
       disabled={isDisabled}
     >
       <svg
+        data-testid="bookmark-icon"
         className={iconClass}
         width={size === 'small' ? 18 : 31}
         height={size === 'small' ? 19 : 33}

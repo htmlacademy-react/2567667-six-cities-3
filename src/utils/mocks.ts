@@ -1,20 +1,39 @@
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
 import { Action } from 'redux';
-import { Offer, Review } from '../types/offer';
 import { reducer } from '../store/reducer';
 import { createAPI } from '../services/api';
-import { RootState } from '../types/state';
+import { Offer, Review } from '../types/offer';
+import { AuthorizationStatus, SortType } from '../const';
+
+export type ManualRootState = {
+  auth: {
+    authorizationStatus: AuthorizationStatus;
+    userEmail: string | null;
+  };
+  offers: {
+    offers: Offer[];
+    isLoading: boolean;
+    hasError: boolean;
+    city: string;
+    sortType: SortType;
+  };
+  favorites: {
+    favorites: Offer[];
+    isUpdating: boolean;
+    isLoading: boolean;
+  };
+};
+
+export const makeMockStore = (preloadedState?: Partial<ManualRootState>) =>
+  configureStore({
+    reducer,
+    preloadedState: preloadedState as ManualRootState,
+  });
+
+export type AppThunkDispatch = ThunkDispatch<ManualRootState, ReturnType<typeof createAPI>, Action>;
 
 export const extractActionTypes = (actions: Action<string>[]) =>
   actions.map(({ type }) => type);
-
-export type AppThunkDispatch = ThunkDispatch<RootState, ReturnType<typeof createAPI>, Action>;
-
-export const makeMockStore = (preloadedState?: Partial<RootState>) =>
-  configureStore({
-    reducer: reducer,
-    preloadedState: preloadedState as RootState,
-  });
 
 export const mockOffer: Offer = {
   id: 'offer-1',
@@ -58,9 +77,7 @@ export const getMockDataSlice = (overrides = {}) => ({
   offers: [],
   isLoading: false,
   hasError: false,
-  city: {
-    name: 'Paris',
-    location: { latitude: 48.8566, longitude: 2.3522, zoom: 10 },
-  },
+  city: 'Paris',
+  sortType: SortType.Popular,
   ...overrides,
 });

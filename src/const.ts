@@ -48,4 +48,5 @@ export const MAX_REVIEWS_COUNT = 10;
 export const NameSpace = {
   Auth: 'auth',
   Offers: 'offers',
-};
+  Favorites: 'favorites',
+} as const;
