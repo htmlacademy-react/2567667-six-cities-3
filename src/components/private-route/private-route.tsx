@@ -1,13 +1,14 @@
+import { useSelector } from 'react-redux';
+import { selectAuthorizationStatus } from '../../store/selectors';
 import {AppRoute, AuthorizationStatus} from '../../const.ts';
 import {Navigate} from 'react-router-dom';
 
 type PrivateRouteProps = {
-  authorizationStatus: AuthorizationStatus;
   children: JSX.Element;
-}
+};
 
-export default function PrivateRoute(props: PrivateRouteProps) : JSX.Element{
-  const {authorizationStatus, children} = props;
+export default function PrivateRoute({ children }: PrivateRouteProps): JSX.Element {
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
 
   return (
     authorizationStatus === AuthorizationStatus.Auth

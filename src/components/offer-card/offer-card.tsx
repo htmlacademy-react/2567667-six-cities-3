@@ -69,14 +69,15 @@ function OfferCardComponent({
       className={articleClass}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      data-testid="offer-card"
     >
       {isPremium && (
-        <div className="place-card__mark">
+        <div className="place-card__mark" data-testid="premium-badge">
           <span>Premium</span>
         </div>
       )}
       <div className={imageWrapperClass}>
-        <Link to={generatePath(AppRoute.Offer, { id })}>
+        <Link to={generatePath(AppRoute.Offer, { id })} data-testid="offer-link">
           <img
             className="place-card__image"
             src={previewImage}
@@ -88,7 +89,7 @@ function OfferCardComponent({
       <div className={infoWrapperClass}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">€{price}</b>
+            <b className="place-card__price-value" data-testid="price">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
           <BookmarkButton
@@ -98,6 +99,7 @@ function OfferCardComponent({
             size="small"
             buttonClass="place-card__bookmark-button"
             iconClass="place-card__bookmark-icon"
+            data-testid="bookmark-button"
           />
         </div>
         <div className="place-card__rating rating">
@@ -106,10 +108,10 @@ function OfferCardComponent({
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
+        <h2 className="place-card__name" data-testid="offer-title">
           <Link to={generatePath(AppRoute.Offer, { id })}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type" data-testid="offer-type">{type}</p>
       </div>
     </article>
   );
