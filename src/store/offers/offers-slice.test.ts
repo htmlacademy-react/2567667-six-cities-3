@@ -6,6 +6,7 @@ describe('offersSlice reducer', () => {
     offers: [],
     isLoading: false,
     hasError: false,
+    isServerUnavailable: false,
     city: DEFAULT_CITY,
     sortType: SortType.Popular,
   };
