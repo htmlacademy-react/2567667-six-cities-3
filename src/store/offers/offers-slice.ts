@@ -8,6 +8,7 @@ export type OffersState = {
   offers: Offer[];
   isLoading: boolean;
   hasError: boolean;
+  isServerUnavailable: boolean;
   city: string;
   sortType: SortType;
 };
@@ -16,6 +17,7 @@ const initialState: OffersState = {
   offers: [],
   isLoading: false,
   hasError: false,
+  isServerUnavailable: false,
   city: DEFAULT_CITY,
   sortType: SortType.Popular,
 };
@@ -36,14 +38,17 @@ export const offersSlice = createSlice({
       .addCase(fetchOffers.pending, (state) => {
         state.isLoading = true;
         state.hasError = false;
+        state.isServerUnavailable = false;
       })
       .addCase(fetchOffers.fulfilled, (state, action) => {
         state.isLoading = false;
         state.offers = action.payload;
+        state.isServerUnavailable = false;
       })
       .addCase(fetchOffers.rejected, (state) => {
         state.isLoading = false;
         state.hasError = true;
+        state.isServerUnavailable = true;
       });
     builder.addCase(toggleFavoriteStatus.fulfilled, (state, action) => {
       const updatedOffer = action.payload;

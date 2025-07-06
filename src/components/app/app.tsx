@@ -14,13 +14,14 @@ import { setCity } from '../../store/offers/offers-slice';
 import { AppDispatch } from '../../store';
 import Spinner from '../spinner/spinner';
 import { checkAuthAction } from '../../store/auth/auth-actions.ts';
-import {selectAuthorizationStatus, selectIsLoading} from '../../store/selectors.ts';
+import {selectAuthorizationStatus, selectIsLoading, selectIsServerUnavailable} from '../../store/selectors.ts';
 import ScrollToTop from '../scroll-to-top/scroll-to-top.tsx';
+import ErrorPage from '../../pages/error-page/error-page';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
   const isLoading = useSelector(selectIsLoading);
-
+  const isServerUnavailable = useSelector(selectIsServerUnavailable);
   useEffect(() => {
     dispatch(fetchOffers());
     dispatch(setCity(DEFAULT_CITY));
@@ -31,6 +32,10 @@ export default function App() {
 
   if (isLoading || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
+  }
+
+  if (isServerUnavailable) {
+    return <ErrorPage />;
   }
 
   return (
