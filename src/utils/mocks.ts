@@ -1,7 +1,5 @@
-import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
-import { Action } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { reducer } from '../store/reducer';
-import { createAPI } from '../services/api';
 import { Offer, Review } from '../types/offer';
 import { AuthorizationStatus, SortType } from '../const';
 
@@ -14,6 +12,7 @@ export type ManualRootState = {
     offers: Offer[];
     isLoading: boolean;
     hasError: boolean;
+    isServerUnavailable: boolean;
     city: string;
     sortType: SortType;
   };
@@ -29,11 +28,6 @@ export const makeMockStore = (preloadedState?: Partial<ManualRootState>) =>
     reducer,
     preloadedState: preloadedState as ManualRootState,
   });
-
-export type AppThunkDispatch = ThunkDispatch<ManualRootState, ReturnType<typeof createAPI>, Action>;
-
-export const extractActionTypes = (actions: Action<string>[]) =>
-  actions.map(({ type }) => type);
 
 export const mockOffer: Offer = {
   id: 'offer-1',
@@ -77,6 +71,7 @@ export const getMockDataSlice = (overrides = {}) => ({
   offers: [],
   isLoading: false,
   hasError: false,
+  isServerUnavailable: false,
   city: 'Paris',
   sortType: SortType.Popular,
   ...overrides,
