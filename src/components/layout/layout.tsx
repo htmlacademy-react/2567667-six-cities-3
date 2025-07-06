@@ -91,7 +91,7 @@ export default function Layout() {
       {showFooter && (
         <footer className="footer container">
           <Link className="footer__logo-link" to={AppRoute.Root}>
-            <Logo width={64} height={33} />
+            <Logo width={64} height={33} noLink />
           </Link>
         </footer>
       )}

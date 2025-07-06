@@ -20,6 +20,7 @@ describe('Component: NearPlacesList', () => {
       offers: [mockOffer],
       isLoading: false,
       hasError: false,
+      isServerUnavailable: false,
       city: 'Paris',
       sortType: SortType.Popular
     },

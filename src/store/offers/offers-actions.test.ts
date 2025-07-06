@@ -51,6 +51,7 @@ describe('Offers async actions', () => {
           offers: [mockOffer],
           isLoading: false,
           hasError: false,
+          isServerUnavailable: false,
           city: 'Paris',
           sortType: SortType.Popular,
         },
