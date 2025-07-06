@@ -26,13 +26,13 @@ export const selectFavoriteOffers = createSelector(
 export const selectFavoritesGroupedByCity = createSelector(
   [selectFavoriteOffers],
   (favorites) =>
-    favorites.reduce<Record<string, Offer[]>>((acc, offer) => {
+    favorites.reduce<Record<string, Offer[]>>((groupedOffersByCity, offer) => {
       const cityName = offer.city.name;
-      if (!acc[cityName]) {
-        acc[cityName] = [];
+      if (!groupedOffersByCity[cityName]) {
+        groupedOffersByCity[cityName] = [];
       }
-      acc[cityName].push(offer);
-      return acc;
+      groupedOffersByCity[cityName].push(offer);
+      return groupedOffersByCity;
     }, {})
 );
 
