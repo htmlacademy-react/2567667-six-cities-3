@@ -50,3 +50,8 @@ export const NameSpace = {
   Offers: 'offers',
   Favorites: 'favorites',
 } as const;
+
+export const REVIEW_LIMIT = {
+  MIN: 50,
+  MAX: 300,
+} as const;

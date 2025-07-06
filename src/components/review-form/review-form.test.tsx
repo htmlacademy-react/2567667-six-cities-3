@@ -20,6 +20,10 @@ vi.mock('../../const', () => ({
     { value: 2, label: 'badly' },
     { value: 1, label: 'terribly' },
   ],
+  REVIEW_LIMIT: {
+    MIN: 50,
+    MAX: 300,
+  },
 }));
 
 describe('Component: ReviewForm', () => {

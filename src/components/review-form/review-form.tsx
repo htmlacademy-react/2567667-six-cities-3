@@ -3,7 +3,7 @@ import RatingStar from '../rating-star/rating-star';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { postReview, fetchReviewsByOfferId } from '../../store/offer-details/offer-details-actions';
-import { RATINGS } from '../../const.ts';
+import { RATINGS, REVIEW_LIMIT } from '../../const.ts';
 import styles from './review-form.module.css';
 import { selectIsReviewsLoading, selectPostReviewError } from '../../store/selectors.ts';
 
@@ -20,7 +20,12 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
-    if (reviewText.length >= 50 && reviewText.length <= 300 && rating && !isSending) {
+    if (
+      reviewText.length >= REVIEW_LIMIT.MIN &&
+      reviewText.length <= REVIEW_LIMIT.MAX &&
+      rating &&
+      !isSending
+    ) {
       dispatch(postReview({ comment: reviewText, rating, offerId }))
         .unwrap()
         .then(() => dispatch(fetchReviewsByOfferId(offerId)).unwrap())
@@ -65,13 +70,18 @@ export default function ReviewForm({ offerId }: ReviewFormProps) {
           <p className="reviews__help">
             To submit review please make sure to set{' '}
             <span className="reviews__star">rating</span> and describe your stay with at least{' '}
-            <b className="reviews__text-amount">50 characters</b>.
+            <b className="reviews__text-amount">{REVIEW_LIMIT.MIN} characters</b>.
           </p>
         )}
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={reviewText.length < 50 || reviewText.length > 300 || !rating || isSending}
+          disabled={
+            reviewText.length < REVIEW_LIMIT.MIN ||
+            reviewText.length > REVIEW_LIMIT.MAX ||
+            !rating ||
+            isSending
+          }
         >
           {isSending ? 'Sending...' : 'Submit'}
         </button>
